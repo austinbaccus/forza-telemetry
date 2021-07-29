@@ -4,8 +4,9 @@ namespace ForzaCore
 {
     public static class PacketParse
     {
-        private const int SLED_PACKET_LENGTH = 232;
-        private const int DASH_PACKET_LENGTH = 311;
+        private const int SLED_PACKET_LENGTH = 232; // FM7
+        private const int DASH_PACKET_LENGTH = 311; // FM7
+        private const int FH7_PACKET_LENGTH = 324; // FH4
 
         public static bool IsSledFormat(byte[] packet)
         {
@@ -15,6 +16,11 @@ namespace ForzaCore
         public static bool IsDashFormat(byte[] packet)
         {
             return packet.Length == DASH_PACKET_LENGTH;
+        }
+
+        public static bool IsFH7Format(byte[] packet)
+        {
+            return packet.Length == FH7_PACKET_LENGTH;
         }
 
         internal static float GetSingle(byte[] bytes, int index)

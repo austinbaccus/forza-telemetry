@@ -15,6 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ "electron");
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Wheel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Wheel */ "./src/app/components/Wheel.tsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -29,22 +30,56 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var Dashboard = function Dashboard() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
       _useState2 = _slicedToArray(_useState, 2),
       data = _useState2[0],
       setData = _useState2[1];
 
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
-      console.log('dashboard received data!');
-      console.log(message);
-      setData(-3);
+      setData(message);
     });
-    setData(-2);
   }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, data);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Wheel__WEBPACK_IMPORTED_MODULE_2__.default, {
+    traction: data ? data.Steer : 0,
+    offset: data ? data.Gear : 0,
+    speed: 0,
+    camber: 0,
+    tempInner: 0,
+    tempCenter: 0,
+    tempOuter: 0
+  }));
 };
+
+/***/ }),
+
+/***/ "./src/app/components/Wheel.tsx":
+/*!**************************************!*\
+  !*** ./src/app/components/Wheel.tsx ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+var Wheel = function Wheel(_ref) {
+  var traction = _ref.traction,
+      offset = _ref.offset,
+      speed = _ref.speed,
+      camber = _ref.camber,
+      tempInner = _ref.tempInner,
+      tempCenter = _ref.tempCenter,
+      tempOuter = _ref.tempOuter;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, traction), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, offset), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, speed), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, camber), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, tempInner), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, tempCenter), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, tempOuter));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Wheel);
 
 /***/ }),
 

@@ -12,8 +12,8 @@ const createWindow = () => {
     height: 600,
     autoHideMenuBar: true,
     webPreferences:{
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: true, // these two preferences are critical
+      contextIsolation: false // to getting data from main to dashboard
     }
   });
 
@@ -54,15 +54,17 @@ connection.onDisconnect = () => {
 };
 
 // send
-connection.send("message-from-node", "hi dotnet, it's node!", (response: any) => {
-  console.log("node: message sent to dotnet");
-  console.log(`node: response: ${response}`);
-});
+// connection.send("message-from-node", "hi dotnet, it's node!", (response: any) => {
+//   console.log("node: message sent to dotnet");
+//   console.log(`node: response: ${response}`);
+// });
 
 // receive
 connection.on('new-data', (data: any) => {
+  // parse data into object
+  var dataObj = JSON.parse(data);
   // send the data from forza to the front-end
-  window.webContents.send("new-data-for-dashboard", data);
+  window.webContents.send("new-data-for-dashboard", dataObj);
   // log this event
-  console.log(`node: new data from dotnet: ${data}`);
+  console.log(`${dataObj.Steer}`);
 });
