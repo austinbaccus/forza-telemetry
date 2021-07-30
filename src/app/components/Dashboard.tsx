@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { ipcRenderer } from "electron";
+
+import { Button } from 'react-bootstrap';
+
 import Wheel from "./Wheel";
+import General from "./General";
 
 type Packet = {
     TimestampMS: number,
@@ -116,14 +120,21 @@ export const Dashboard = () => {
     }, []);
     return (
         <div>
-            <Wheel 
-                traction={data ? data.Steer : 0} 
-                offset={data ? data.Gear : 0} 
-                speed={0} 
-                camber={0} 
-                tempInner={0}
-                tempCenter={0}
-                tempOuter={0}
+            <Button onClick={() => {ipcRenderer.send('switch-recording-mode', '')}}>Record</Button>
+
+            <>TimestampMS: {data ? data.TimestampMS : 0}</>
+
+            <General 
+                PositionX={data ? data.PositionX : 0}
+                PositionY={data ? data.PositionY : 0}
+                PositionZ={data ? data.PositionZ : 0}
+                Steer={data ? data.Steer : 0} 
+                Gear={data ? data.Gear : 0} 
+                Fuel={data ? data.Fuel : 0} 
+                Distance={data ? data.Distance : 0} 
+                EngineMaxRpm={data ? data.EngineMaxRpm : 0}
+                EngineIdleRpm={data ? data.EngineIdleRpm : 0}
+                CurrentEngineRpm={data ? data.CurrentEngineRpm : 0}
             />
         </div>
     );

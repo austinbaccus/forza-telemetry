@@ -2,14 +2,15 @@ const url = require("url");
 const path = require("path");
 const { ConnectionBuilder } = require("electron-cgi");
 
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 
 let window: BrowserWindow | null;
 
 const createWindow = () => {
   window = new BrowserWindow({
-    width: 800, 
-    height: 600,
+    width: 1920, 
+    height: 1080,
+    backgroundColor: "#1e1e1e",
     autoHideMenuBar: true,
     webPreferences:{
       nodeIntegration: true, // these two preferences are critical
@@ -53,12 +54,6 @@ connection.onDisconnect = () => {
   console.log("lost");
 };
 
-// send
-// connection.send("message-from-node", "hi dotnet, it's node!", (response: any) => {
-//   console.log("node: message sent to dotnet");
-//   console.log(`node: response: ${response}`);
-// });
-
 // receive
 connection.on('new-data', (data: any) => {
   // parse data into object
@@ -67,4 +62,18 @@ connection.on('new-data', (data: any) => {
   window.webContents.send("new-data-for-dashboard", dataObj);
   // log this event
   console.log(`${dataObj.Steer}`);
+});
+
+connection.on('switch-recording-mode', (data: any) => {
+  // parse data into object
+  var dataObj = JSON.parse(data);
+  // send the data from forza to the front-end
+  window.webContents.send("new-data-for-dashboard", dataObj);
+  // log this event
+  console.log(`${dataObj.Steer}`);
+});
+
+// send
+ipcMain.on('switch-recording-mode', (event, arg) => {
+  connection.send("switch-recording-mode", "", (response: any) => { });
 });

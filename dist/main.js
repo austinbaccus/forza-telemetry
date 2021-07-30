@@ -495,8 +495,9 @@ var window;
 
 var createWindow = function createWindow() {
   window = new electron__WEBPACK_IMPORTED_MODULE_0__.BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
+    backgroundColor: "#1e1e1e",
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
@@ -531,12 +532,7 @@ var connection = new ConnectionBuilder().connectTo('dotnet', 'run', '--project',
 
 connection.onDisconnect = function () {
   console.log("lost");
-}; // send
-// connection.send("message-from-node", "hi dotnet, it's node!", (response: any) => {
-//   console.log("node: message sent to dotnet");
-//   console.log(`node: response: ${response}`);
-// });
-// receive
+}; // receive
 
 
 connection.on('new-data', function (data) {
@@ -546,6 +542,18 @@ connection.on('new-data', function (data) {
   window.webContents.send("new-data-for-dashboard", dataObj); // log this event
 
   console.log("".concat(dataObj.Steer));
+});
+connection.on('switch-recording-mode', function (data) {
+  // parse data into object
+  var dataObj = JSON.parse(data); // send the data from forza to the front-end
+
+  window.webContents.send("new-data-for-dashboard", dataObj); // log this event
+
+  console.log("".concat(dataObj.Steer));
+}); // send
+
+electron__WEBPACK_IMPORTED_MODULE_0__.ipcMain.on('switch-recording-mode', function (event, arg) {
+  connection.send("switch-recording-mode", "", function (response) {});
 });
 })();
 
