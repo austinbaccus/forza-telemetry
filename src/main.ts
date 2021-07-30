@@ -8,9 +8,8 @@ let window: BrowserWindow | null;
 
 const createWindow = () => {
   window = new BrowserWindow({
-    width: 1920, 
-    height: 1080,
-    backgroundColor: "#1e1e1e",
+    width: 1000, 
+    height: 800,
     autoHideMenuBar: true,
     webPreferences:{
       nodeIntegration: true, // these two preferences are critical
