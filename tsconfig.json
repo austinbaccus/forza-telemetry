@@ -6,7 +6,8 @@
     "noImplicitAny": true,
     "module": "commonjs",
     "target": "es5",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true
   },
   "exclude": [
     "node_modules"

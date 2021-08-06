@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import { ipcRenderer } from "electron";
-
 import { Button } from 'react-bootstrap';
+import CSS from 'csstype';
 
-import Wheel from "./Wheel";
+import Accelerometer from './Accelerometer';
 import General from "./General";
+import Wheels from "./Wheel/Wheels";
+import Card from "./Card";
+
+const column: CSS.Properties = {
+    float: 'left',
+    width: '33.33%',
+    height: '98vh',
+    backgroundColor: '#000000'
+};
 
 type Packet = {
     TimestampMS: number,
@@ -112,6 +121,7 @@ type Packet = {
 
 export const Dashboard = () => {
     const [data, setData] = useState<Packet>();
+    const [recordingState, setRecordingState] = useState('Record');
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
@@ -120,22 +130,64 @@ export const Dashboard = () => {
     }, []);
     return (
         <div>
-            <Button onClick={() => {ipcRenderer.send('switch-recording-mode', '')}}>Record</Button>
-
-            <>TimestampMS: {data ? data.TimestampMS : 0}</>
-
-            <General 
-                PositionX={data ? data.PositionX : 0}
-                PositionY={data ? data.PositionY : 0}
-                PositionZ={data ? data.PositionZ : 0}
-                Steer={data ? data.Steer : 0} 
-                Gear={data ? data.Gear : 0} 
-                Fuel={data ? data.Fuel : 0} 
-                Distance={data ? data.Distance : 0} 
-                EngineMaxRpm={data ? data.EngineMaxRpm : 0}
-                EngineIdleRpm={data ? data.EngineIdleRpm : 0}
-                CurrentEngineRpm={data ? data.CurrentEngineRpm : 0}
-            />
+            <div style={column}>
+                <Card>
+                    <Button onClick={() => { 
+                        ipcRenderer.send('switch-recording-mode', '');
+                        setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
+                        }}>
+                        {recordingState}
+                    </Button>
+                    <p>TimestampMS: {data ? data.TimestampMS : 0}</p>
+                </Card>
+            </div>
+            
+            <div style={column}>
+                <Card>
+                    <Accelerometer 
+                        X={data ? data.AccelerationX : 0}
+                        Y={data ? data.AccelerationY : 0}
+                        Z={data ? data.AccelerationZ : 0}
+                    />
+                </Card>
+                <Card>
+                    <Wheels
+                        FlTemp={data ? data.TireTempFl : 0}
+                        FrTemp={data ? data.TireTempFr : 0}
+                        RlTemp={data ? data.TireTempRl : 0}
+                        RrTemp={data ? data.TireTempRr : 0}
+                        FlSlip={data ? data.TireCombinedSlipFrontLeft : 0}
+                        FrSlip={data ? data.TireCombinedSlipFrontRight : 0}
+                        RlSlip={data ? data.TireCombinedSlipRearLeft : 0}
+                        RrSlip={data ? data.TireCombinedSlipRearRight : 0}
+                        FlSlipRatio={data ? data.TireSlipRatioFrontLeft : 0}
+                        FrSlipRatio={data ? data.TireSlipRatioFrontRight : 0}
+                        RlSlipRatio={data ? data.TireSlipRatioRearLeft : 0}
+                        RrSlipRatio={data ? data.TireSlipRatioRearRight : 0}
+                        FlSlipAngle={data ? data.TireSlipAngleFrontLeft : 0}
+                        FrSlipAngle={data ? data.TireSlipAngleFrontRight : 0}
+                        RlSlipAngle={data ? data.TireSlipAngleRearLeft : 0}
+                        RrSlipAngle={data ? data.TireSlipAngleRearRight : 0}
+                    />
+                </Card>
+            </div>
+            
+            <div style={column}>
+                <Card>
+                    <General 
+                        PositionX={data ? data.PositionX : 0}
+                        PositionY={data ? data.PositionY : 0}
+                        PositionZ={data ? data.PositionZ : 0}
+                        Steer={data ? data.Steer : 0} 
+                        Gear={data ? data.Gear : 0} 
+                        Fuel={data ? data.Fuel : 0} 
+                        Distance={data ? data.Distance : 0} 
+                        EngineMaxRpm={data ? data.EngineMaxRpm : 0}
+                        EngineIdleRpm={data ? data.EngineIdleRpm : 0}
+                        CurrentEngineRpm={data ? data.CurrentEngineRpm : 0}
+                    />
+                </Card>
+            </div>
         </div>
     );
 };

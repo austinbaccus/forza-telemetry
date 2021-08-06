@@ -1,0 +1,5 @@
+{
+    "telemetryRecordingIntervalMS": 100,
+    "outPort": 5300,
+    "hostPort": 5200
+}

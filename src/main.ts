@@ -10,6 +10,7 @@ const createWindow = () => {
   window = new BrowserWindow({
     width: 1000, 
     height: 800,
+    backgroundColor: '#000000',
     autoHideMenuBar: true,
     webPreferences:{
       nodeIntegration: true, // these two preferences are critical
