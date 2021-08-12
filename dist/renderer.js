@@ -15,11 +15,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ "electron");
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Button.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Button.js");
 /* harmony import */ var _Accelerometer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Accelerometer */ "./src/app/components/Accelerometer.js");
-/* harmony import */ var _General__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./General */ "./src/app/components/General.tsx");
-/* harmony import */ var _Wheel_Wheels__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Wheel/Wheels */ "./src/app/components/Wheel/Wheels.tsx");
-/* harmony import */ var _Card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Card */ "./src/app/components/Card.js");
+/* harmony import */ var _Laps__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Laps */ "./src/app/components/Laps.js");
+/* harmony import */ var _Tires__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Tires */ "./src/app/components/Tires.js");
+/* harmony import */ var _Steering__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Steering */ "./src/app/components/Steering.js");
+/* harmony import */ var _Map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Map */ "./src/app/components/Map.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -39,12 +40,111 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var column = {
   "float": 'left',
   width: '33.33%',
   height: '98vh',
   backgroundColor: '#000000'
 };
+var sideColumnStyle = {
+  "float": 'left',
+  width: '25%',
+  height: '95vh'
+};
+var centerColumnStyle = {
+  "float": 'left',
+  width: '50%',
+  height: '95vh'
+};
+var accelerometerContainerStyle = {
+  backgroundColor: '#171717',
+  height: '33.33%',
+  margin: '15px',
+  borderRadius: '5px'
+};
+var lapContainerStyle = {
+  backgroundColor: '#171717',
+  height: '66.66%',
+  margin: '15px',
+  borderRadius: '5px'
+};
+var basicTelemetryContainerStyle = {
+  backgroundColor: '#171717',
+  height: '32.75%',
+  margin: '15px',
+  borderRadius: '5px'
+};
+var mainHudContainerStyle = {};
+// export const Dashboard = () => {
+//     const [data, setData] = useState<Packet>();
+//     const [recordingState, setRecordingState] = useState('Record');
+//     React.useEffect( () => {
+//         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
+//             setData(message);  
+//         });               
+//     }, []);
+//     return (
+//         <div>
+//             <div style={column}>
+//                 <Card>
+//                     <Button onClick={() => { 
+//                         ipcRenderer.send('switch-recording-mode', '');
+//                         setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
+//                         }}>
+//                         {recordingState}
+//                     </Button>
+//                     <p>TimestampMS: {data ? data.TimestampMS : 0}</p>
+//                 </Card>
+//             </div>
+//             <div style={column}>
+//                 <Card>
+//                     <Accelerometer 
+//                         X={data ? data.AccelerationX : 0}
+//                         Y={data ? data.AccelerationY : 0}
+//                         Z={data ? data.AccelerationZ : 0}
+//                     />
+//                 </Card>
+//                 <Card>
+//                     <Wheels
+//                         FlTemp={data ? data.TireTempFl : 0}
+//                         FrTemp={data ? data.TireTempFr : 0}
+//                         RlTemp={data ? data.TireTempRl : 0}
+//                         RrTemp={data ? data.TireTempRr : 0}
+//                         FlSlip={data ? data.TireCombinedSlipFrontLeft : 0}
+//                         FrSlip={data ? data.TireCombinedSlipFrontRight : 0}
+//                         RlSlip={data ? data.TireCombinedSlipRearLeft : 0}
+//                         RrSlip={data ? data.TireCombinedSlipRearRight : 0}
+//                         FlSlipRatio={data ? data.TireSlipRatioFrontLeft : 0}
+//                         FrSlipRatio={data ? data.TireSlipRatioFrontRight : 0}
+//                         RlSlipRatio={data ? data.TireSlipRatioRearLeft : 0}
+//                         RrSlipRatio={data ? data.TireSlipRatioRearRight : 0}
+//                         FlSlipAngle={data ? data.TireSlipAngleFrontLeft : 0}
+//                         FrSlipAngle={data ? data.TireSlipAngleFrontRight : 0}
+//                         RlSlipAngle={data ? data.TireSlipAngleRearLeft : 0}
+//                         RrSlipAngle={data ? data.TireSlipAngleRearRight : 0}
+//                     />
+//                 </Card>
+//             </div>
+//             <div style={column}>
+//                 <Card>
+//                     <General 
+//                         PositionX={data ? data.PositionX : 0}
+//                         PositionY={data ? data.PositionY : 0}
+//                         PositionZ={data ? data.PositionZ : 0}
+//                         Steer={data ? data.Steer : 0} 
+//                         Gear={data ? data.Gear : 0} 
+//                         Fuel={data ? data.Fuel : 0} 
+//                         Distance={data ? data.Distance : 0} 
+//                         EngineMaxRpm={data ? data.EngineMaxRpm : 0}
+//                         EngineIdleRpm={data ? data.EngineIdleRpm : 0}
+//                         CurrentEngineRpm={data ? data.CurrentEngineRpm : 0}
+//                     />
+//                 </Card>
+//             </div>
+//         </div>
+//     );
+// };
 var Dashboard = function Dashboard() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
       _useState2 = _slicedToArray(_useState, 2),
@@ -62,265 +162,34 @@ var Dashboard = function Dashboard() {
     });
   }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: column
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Card__WEBPACK_IMPORTED_MODULE_5__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__.default, {
+    style: sideColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: accelerometerContainerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Accelerometer__WEBPACK_IMPORTED_MODULE_2__.default, {
+    X: data ? data.AccelerationX : 0,
+    Y: data ? data.AccelerationY : 0,
+    Z: data ? data.AccelerationZ : 0
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: lapContainerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Laps__WEBPACK_IMPORTED_MODULE_3__.default, null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: centerColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: mainHudContainerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__.default, {
     onClick: function onClick() {
       electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.send('switch-recording-mode', '');
       setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
     }
   }, recordingState), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "TimestampMS: ", data ? data.TimestampMS : 0))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: column
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Card__WEBPACK_IMPORTED_MODULE_5__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Accelerometer__WEBPACK_IMPORTED_MODULE_2__.default, {
-    X: data ? data.AccelerationX : 0,
-    Y: data ? data.AccelerationY : 0,
-    Z: data ? data.AccelerationZ : 0
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Card__WEBPACK_IMPORTED_MODULE_5__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Wheel_Wheels__WEBPACK_IMPORTED_MODULE_4__.default, {
-    FlTemp: data ? data.TireTempFl : 0,
-    FrTemp: data ? data.TireTempFr : 0,
-    RlTemp: data ? data.TireTempRl : 0,
-    RrTemp: data ? data.TireTempRr : 0,
-    FlSlip: data ? data.TireCombinedSlipFrontLeft : 0,
-    FrSlip: data ? data.TireCombinedSlipFrontRight : 0,
-    RlSlip: data ? data.TireCombinedSlipRearLeft : 0,
-    RrSlip: data ? data.TireCombinedSlipRearRight : 0,
-    FlSlipRatio: data ? data.TireSlipRatioFrontLeft : 0,
-    FrSlipRatio: data ? data.TireSlipRatioFrontRight : 0,
-    RlSlipRatio: data ? data.TireSlipRatioRearLeft : 0,
-    RrSlipRatio: data ? data.TireSlipRatioRearRight : 0,
-    FlSlipAngle: data ? data.TireSlipAngleFrontLeft : 0,
-    FrSlipAngle: data ? data.TireSlipAngleFrontRight : 0,
-    RlSlipAngle: data ? data.TireSlipAngleRearLeft : 0,
-    RrSlipAngle: data ? data.TireSlipAngleRearRight : 0
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: column
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Card__WEBPACK_IMPORTED_MODULE_5__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_General__WEBPACK_IMPORTED_MODULE_3__.default, {
-    PositionX: data ? data.PositionX : 0,
-    PositionY: data ? data.PositionY : 0,
-    PositionZ: data ? data.PositionZ : 0,
-    Steer: data ? data.Steer : 0,
-    Gear: data ? data.Gear : 0,
-    Fuel: data ? data.Fuel : 0,
-    Distance: data ? data.Distance : 0,
-    EngineMaxRpm: data ? data.EngineMaxRpm : 0,
-    EngineIdleRpm: data ? data.EngineIdleRpm : 0,
-    CurrentEngineRpm: data ? data.CurrentEngineRpm : 0
-  }))));
+    style: sideColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: basicTelemetryContainerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Tires__WEBPACK_IMPORTED_MODULE_4__.default, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: basicTelemetryContainerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Steering__WEBPACK_IMPORTED_MODULE_5__.default, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: basicTelemetryContainerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Map__WEBPACK_IMPORTED_MODULE_6__.default, null))));
 };
-
-/***/ }),
-
-/***/ "./src/app/components/DataText.tsx":
-/*!*****************************************!*\
-  !*** ./src/app/components/DataText.tsx ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var headerStyle = {
-  borderRadius: '5em',
-  backgroundColor: '#010101',
-  color: '#ffffff',
-  textAlign: 'center'
-};
-
-var DataText = function DataText(_ref) {
-  var header = _ref.header,
-      value = _ref.value,
-      alignment = _ref.alignment;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: headerStyle
-  }, header), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: {
-      color: '#ffffff',
-      textAlign: alignment === 'left' ? 'left' : 'right'
-    }
-  }, value));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DataText);
-
-/***/ }),
-
-/***/ "./src/app/components/General.tsx":
-/*!****************************************!*\
-  !*** ./src/app/components/General.tsx ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-
-var General = function General(_ref) {
-  var PositionX = _ref.PositionX,
-      PositionY = _ref.PositionY,
-      PositionZ = _ref.PositionZ,
-      Steer = _ref.Steer,
-      Gear = _ref.Gear,
-      Fuel = _ref.Fuel,
-      Distance = _ref.Distance,
-      EngineMaxRpm = _ref.EngineMaxRpm,
-      EngineIdleRpm = _ref.EngineIdleRpm,
-      CurrentEngineRpm = _ref.CurrentEngineRpm;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "X: ", PositionX), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Y: ", PositionY), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Z: ", PositionZ), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Steer: ", Steer), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Gear: ", Gear), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Fuel: ", Fuel), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Distance: ", Distance), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "EngineMaxRpm: ", EngineMaxRpm), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "EngineIdleRpm: ", EngineIdleRpm), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "CurrentEngineRpm: ", CurrentEngineRpm));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (General);
-
-/***/ }),
-
-/***/ "./src/app/components/Wheel/WheelNumbers.tsx":
-/*!***************************************************!*\
-  !*** ./src/app/components/Wheel/WheelNumbers.tsx ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _DataText__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DataText */ "./src/app/components/DataText.tsx");
-
-
-var container = {
-  width: '100%'
-};
-
-var WheelNumbers = function WheelNumbers(_ref) {
-  var Side = _ref.Side,
-      Temp = _ref.Temp,
-      Slip = _ref.Slip,
-      SlipRatio = _ref.SlipRatio,
-      SlipAngle = _ref.SlipAngle;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: container
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DataText__WEBPACK_IMPORTED_MODULE_1__.default, {
-    header: "Temp",
-    value: Temp,
-    alignment: Side === 0 ? 'left' : 'right'
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DataText__WEBPACK_IMPORTED_MODULE_1__.default, {
-    header: "Slip",
-    value: Slip,
-    alignment: Side === 0 ? 'left' : 'right'
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DataText__WEBPACK_IMPORTED_MODULE_1__.default, {
-    header: "Slip Ratio",
-    value: SlipRatio,
-    alignment: Side === 0 ? 'left' : 'right'
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_DataText__WEBPACK_IMPORTED_MODULE_1__.default, {
-    header: "Slip Angle",
-    value: SlipAngle,
-    alignment: Side === 0 ? 'left' : 'right'
-  }));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WheelNumbers);
-
-/***/ }),
-
-/***/ "./src/app/components/Wheel/Wheels.tsx":
-/*!*********************************************!*\
-  !*** ./src/app/components/Wheel/Wheels.tsx ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _WheelNumbers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WheelNumbers */ "./src/app/components/Wheel/WheelNumbers.tsx");
-/* harmony import */ var _WheelVisual__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./WheelVisual */ "./src/app/components/Wheel/WheelVisual.js");
-
-
-
-var layout = {
-  width: '100%'
-};
-
-var Wheels = function Wheels(_ref) {
-  var FlTemp = _ref.FlTemp,
-      FrTemp = _ref.FrTemp,
-      RlTemp = _ref.RlTemp,
-      RrTemp = _ref.RrTemp,
-      FlSlip = _ref.FlSlip,
-      FrSlip = _ref.FrSlip,
-      RlSlip = _ref.RlSlip,
-      RrSlip = _ref.RrSlip,
-      FlSlipRatio = _ref.FlSlipRatio,
-      FrSlipRatio = _ref.FrSlipRatio,
-      RlSlipRatio = _ref.RlSlipRatio,
-      RrSlipRatio = _ref.RrSlipRatio,
-      FlSlipAngle = _ref.FlSlipAngle,
-      FrSlipAngle = _ref.FrSlipAngle,
-      RlSlipAngle = _ref.RlSlipAngle,
-      RrSlipAngle = _ref.RrSlipAngle;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
-    style: layout
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
-    style: {
-      width: '60px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelVisual__WEBPACK_IMPORTED_MODULE_2__.default, {
-    Temp: FlTemp
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelNumbers__WEBPACK_IMPORTED_MODULE_1__.default, {
-    Side: 0,
-    Temp: FlTemp,
-    Slip: FlSlip,
-    SlipRatio: FlSlipRatio,
-    SlipAngle: FlSlipAngle
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelNumbers__WEBPACK_IMPORTED_MODULE_1__.default, {
-    Side: 1,
-    Temp: FrTemp,
-    Slip: FrSlip,
-    SlipRatio: FrSlipRatio,
-    SlipAngle: FrSlipAngle
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
-    style: {
-      width: '60px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelVisual__WEBPACK_IMPORTED_MODULE_2__.default, {
-    Temp: FrTemp
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
-    style: {
-      width: '60px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelVisual__WEBPACK_IMPORTED_MODULE_2__.default, {
-    Temp: RlTemp
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelNumbers__WEBPACK_IMPORTED_MODULE_1__.default, {
-    Side: 0,
-    Temp: RlTemp,
-    Slip: RlSlip,
-    SlipRatio: RlSlipRatio,
-    SlipAngle: RlSlipAngle
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelNumbers__WEBPACK_IMPORTED_MODULE_1__.default, {
-    Side: 1,
-    Temp: RrTemp,
-    Slip: RrSlip,
-    SlipRatio: RrSlipRatio,
-    SlipAngle: RrSlipAngle
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
-    style: {
-      width: '60px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_WheelVisual__WEBPACK_IMPORTED_MODULE_2__.default, {
-    Temp: RrTemp
-  })))));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Wheels);
 
 /***/ }),
 
@@ -339,14 +208,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_shapes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-shapes */ "./node_modules/react-shapes/lib/Shapes.js");
 
 
+var centerStyle = {
+  margin: 'auto',
+  width: '300px',
+  height: '300px',
+  paddingTop: '17px'
+};
 var blockStyle = {
   display: 'flex',
   flexFlow: 'row nowrap' //height: '94vh'
 
-};
-var centerStyle = {
-  margin: 'auto',
-  width: '50%'
 };
 var backgroundStyle = {
   boxSizing: 'borderBox',
@@ -360,15 +231,28 @@ var foregroundStyle = {
   marginLeft: '-100%'
 };
 
-function CenterCircle() {}
+function GetAccelerometerPosition(x, z, radius) {
+  var xSign = x >= 0 ? 1 : -1;
+  var zSign = z >= 0 ? 1 : -1;
+  var xVal = Math.min(Math.abs(x * 10), radius) * xSign;
+  var zVal = Math.min(Math.abs(z * 10), radius) * zSign;
+  return "".concat(radius, ",").concat(radius, " ").concat(radius - xVal, ",").concat(radius + zVal);
+}
 
-function CenterLine() {}
-
-function GetAccelerometerPosition(x, z) {
-  return "150,150 ".concat(150 - x * 10, ",").concat(150 + z * 10);
+function GetRedLinePosition(x, z, radius) {
+  var xSign = x >= 0 ? 1 : -1;
+  var zSign = z >= 0 ? 1 : -1;
+  var xEnd = radius - Math.min(Math.abs(x * 10), radius) * xSign;
+  var zEnd = radius + Math.min(Math.abs(z * 10), radius) * zSign;
+  var xLen = xEnd - radius;
+  var zLen = zEnd - radius;
+  var xStart = radius - Math.min(Math.abs(x * 10), radius) * xSign - xLen * 0.15;
+  var zStart = radius + Math.min(Math.abs(z * 10), radius) * zSign - zLen * 0.15;
+  return "".concat(xStart, ",").concat(zStart, " ").concat(xEnd, ",").concat(zEnd);
 }
 
 function Accelerometer(props) {
+  var radius = 150;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: centerStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -376,35 +260,60 @@ function Accelerometer(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: backgroundStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_shapes__WEBPACK_IMPORTED_MODULE_1__.Circle, {
-    r: 150,
+    r: radius,
     fill: {
       color: 'transparent'
     },
     stroke: {
-      color: 'red'
+      color: '#4D4D4D'
     },
     strokeWidth: 1
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: foregroundStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_shapes__WEBPACK_IMPORTED_MODULE_1__.Polyline, {
-    points: GetAccelerometerPosition(props.X, props.Z),
+    points: GetAccelerometerPosition(props.X, props.Z, radius),
     fill: {
       color: '#34495e'
     },
     stroke: {
-      color: 'red'
+      color: '#4D4D4D'
+    },
+    strokeWidth: 3
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: foregroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_shapes__WEBPACK_IMPORTED_MODULE_1__.Polyline, {
+    points: GetRedLinePosition(props.X, props.Z, radius),
+    fill: {
+      color: 'transparent'
+    },
+    stroke: {
+      color: '#C54242'
     },
     strokeWidth: 3
   }))));
-}
+} // function Accelerometer(props) {
+//     return (
+//         <div style={centerStyle}>
+//             <div style={blockStyle}>
+//                 <div style={backgroundStyle}>
+//                     <Circle r={150} fill={{color:'transparent'}} stroke={{color:'#4D4D4D'}} strokeWidth={1} />
+//                 </div>
+//                 <div style={foregroundStyle}>
+//                     <Polyline points={GetAccelerometerPosition(props.X, props.Z)} fill={{color:'#34495e'}} stroke={{color:'#4D4D4D'}} strokeWidth={3} />
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Accelerometer);
 
 /***/ }),
 
-/***/ "./src/app/components/Card.js":
+/***/ "./src/app/components/Laps.js":
 /*!************************************!*\
-  !*** ./src/app/components/Card.js ***!
+  !*** ./src/app/components/Laps.js ***!
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -415,29 +324,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
-var card = {
-  //width: '100%',
-  backgroundColor: 'grey',
-  padding: '10px',
-  margin: '10px',
-  borderRadius: '8px'
-};
 
-var Card = function Card(_ref) {
-  var children = _ref.children;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: card
-  }, children);
-};
+function Laps(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "tires"));
+}
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Card);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Laps);
 
 /***/ }),
 
-/***/ "./src/app/components/Wheel/WheelVisual.js":
-/*!*************************************************!*\
-  !*** ./src/app/components/Wheel/WheelVisual.js ***!
-  \*************************************************/
+/***/ "./src/app/components/Map.js":
+/*!***********************************!*\
+  !*** ./src/app/components/Map.js ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -446,54 +345,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_shapes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-shapes */ "./node_modules/react-shapes/lib/Shapes.js");
 
 
-
-function tempToScale(temp) {
-  var minTemp = 30;
-  var maxTemp = 300;
-  return Math.floor(765 * Math.min(1, Math.max(0, (temp - minTemp) / maxTemp)));
+function Map(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "map"));
 }
 
-function toRgba(tempScaleValue) {
-  // tempScaleValue ranges from 0 to 765, 0 being the coldest
-  // first 255 - third value goes from 255 to 0
-  var thirdValue = 255 - Math.min(255, tempScaleValue); // second 255
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Map);
 
-  var firstValue = tempScaleValue > 255 ? Math.min(255, tempScaleValue - 255) : 0; // third 255
+/***/ }),
 
-  var secondValue = tempScaleValue > 510 ? 255 - (tempScaleValue - 510) : 255;
-  return "rgba(".concat(firstValue, ",").concat(secondValue, ",").concat(thirdValue, ",1)");
+/***/ "./src/app/components/Steering.js":
+/*!****************************************!*\
+  !*** ./src/app/components/Steering.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+function Steering(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "steering"));
 }
 
-function toHex(rgbaValue) {
-  // rgbaValue format: "rgba(0, 0, 0, 0.74)"
-  var rgb = rgbaValue.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
-      hex = rgb ? (rgb[1] | 1 << 8).toString(16).slice(1) + (rgb[2] | 1 << 8).toString(16).slice(1) + (rgb[3] | 1 << 8).toString(16).slice(1) : rgbaValue;
-  return "#".concat(hex);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Steering);
+
+/***/ }),
+
+/***/ "./src/app/components/Tires.js":
+/*!*************************************!*\
+  !*** ./src/app/components/Tires.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+function Tires(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "tires"));
 }
 
-function WheelVisual(props) {
-  var t = props.Temp;
-  var tempScaleValue = tempToScale(t);
-  var rgb = toRgba(tempScaleValue);
-  var hex = toHex(rgb);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_shapes__WEBPACK_IMPORTED_MODULE_1__.Rectangle, {
-    width: 50,
-    height: 100,
-    fill: {
-      color: hex
-    },
-    stroke: {
-      color: '#FFFFFF'
-    },
-    strokeWidth: 3
-  }));
-}
-
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WheelVisual);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tires);
 
 /***/ }),
 

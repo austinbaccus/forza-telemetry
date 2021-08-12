@@ -495,9 +495,9 @@ var window;
 
 var createWindow = function createWindow() {
   window = new electron__WEBPACK_IMPORTED_MODULE_0__.BrowserWindow({
-    width: 1000,
-    height: 800,
-    backgroundColor: '#000000',
+    width: 1920,
+    height: 1080,
+    backgroundColor: '#0A0A0A',
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
