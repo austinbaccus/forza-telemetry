@@ -167,10 +167,24 @@ export const Dashboard2 = () => {
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
             setData(message);
+            if (message.Lap !== lapNumber) {
+                setLapCoords([])
+            } else {
+                
+            }
             setLapNumber(message.Lap)
-            setLapCoords([message.PositionX, message.PositionZ])
+
+            let c = lapCoords
+            c.push([message.PositionX, message.PositionZ])
+            setLapCoords(c)
+
+            //setLapCoords(lapCoords.push([message.PositionX, message.PositionZ]))
+
+            //let c = [...lapCoords,[message.PositionX, message.PositionZ]]
         });               
     }, []);
+
+
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -198,7 +212,7 @@ export const Dashboard2 = () => {
                         {recordingState}
                     </Button>
                     <p style={{color: 'white'}}>TimestampMS: {data ? data.TimestampMS : 0}</p>
-                    <p style={{color: 'white'}}>Coords: {lapCoords}</p>
+                    {/* <p style={{color: 'white'}}>Coords: {lapCoords}</p> */}
                     <p style={{color: 'white'}}>X: {data ? data.PositionX : 0}</p>
                     <p style={{color: 'white'}}>Y: {data ? data.PositionY : 0}</p>
                     <p style={{color: 'white'}}>Z: {data ? data.PositionZ : 0}</p>

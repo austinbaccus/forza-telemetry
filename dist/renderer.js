@@ -4744,7 +4744,7 @@ var Dashboard2 = function Dashboard2() {
       recordingState = _useState4[0],
       setRecordingState = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([0, 0]),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState6 = _slicedToArray(_useState5, 2),
       lapCoords = _useState6[0],
       setLapCoords = _useState6[1];
@@ -4757,8 +4757,16 @@ var Dashboard2 = function Dashboard2() {
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
       setData(message);
+
+      if (message.Lap !== lapNumber) {
+        setLapCoords([]);
+      } else {}
+
       setLapNumber(message.Lap);
-      setLapCoords([message.PositionX, message.PositionZ]);
+      var c = lapCoords;
+      c.push([message.PositionX, message.PositionZ]);
+      setLapCoords(c); //setLapCoords(lapCoords.push([message.PositionX, message.PositionZ]))
+      //let c = [...lapCoords,[message.PositionX, message.PositionZ]]
     });
   }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__.default, {
@@ -4787,10 +4795,6 @@ var Dashboard2 = function Dashboard2() {
       color: 'white'
     }
   }, "TimestampMS: ", data ? data.TimestampMS : 0), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    style: {
-      color: 'white'
-    }
-  }, "Coords: ", lapCoords), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     style: {
       color: 'white'
     }
@@ -5057,10 +5061,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function CreateMap(coords) {
-  return d3__WEBPACK_IMPORTED_MODULE_1__.line()(coords);
-}
-
 function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
   var w = maxX - minX;
   var h = maxZ - minZ; // make sure the dimensions have a 1.344:1 ratio
@@ -5076,11 +5076,11 @@ function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
 
   w = w * 1.1;
   h = h * 1.1;
-  return [w, h];
+  return [w, h]; // return [1344,1000]
 }
 
 function CalculateMapOffset(minX, minZ) {
-  return [minX * 1.5, minZ * 1.1];
+  return [minX * 1.0, minZ * 1.1];
 }
 
 function checkNewBounds(newCoords, minX, maxX, minZ, maxZ) {
@@ -5093,57 +5093,42 @@ function checkNewBounds(newCoords, minX, maxX, minZ, maxZ) {
 }
 
 function Map(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([[0, 0]]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-10),
       _useState2 = _slicedToArray(_useState, 2),
-      currentLapPath = _useState2[0],
-      setCurrentLapPath = _useState2[1];
+      minX = _useState2[0],
+      setMinX = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(10),
       _useState4 = _slicedToArray(_useState3, 2),
-      lastLapPath = _useState4[0],
-      setLastLapPath = _useState4[1];
+      maxX = _useState4[0],
+      setMaxX = _useState4[1];
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-10),
       _useState6 = _slicedToArray(_useState5, 2),
-      minX = _useState6[0],
-      setMinX = _useState6[1];
+      minZ = _useState6[0],
+      setMinZ = _useState6[1];
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(10),
       _useState8 = _slicedToArray(_useState7, 2),
-      maxX = _useState8[0],
-      setMaxX = _useState8[1];
+      maxZ = _useState8[0],
+      setMaxZ = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-10),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([13.44, 10.00]),
       _useState10 = _slicedToArray(_useState9, 2),
-      minZ = _useState10[0],
-      setMinZ = _useState10[1];
+      mapDimensions = _useState10[0],
+      setMapDimensions = _useState10[1]; // width, height
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(10),
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([-5, -5]),
       _useState12 = _slicedToArray(_useState11, 2),
-      maxZ = _useState12[0],
-      setMaxZ = _useState12[1];
-
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([13.44, 10.00]),
-      _useState14 = _slicedToArray(_useState13, 2),
-      mapDimensions = _useState14[0],
-      setMapDimensions = _useState14[1]; // width, height
-
-
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([-5, -5]),
-      _useState16 = _slicedToArray(_useState15, 2),
-      mapOffset = _useState16[0],
-      setMapOffset = _useState16[1]; // horizontal, vertical
-
-
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
-      _useState18 = _slicedToArray(_useState17, 2),
-      currentLapNumber = _useState18[0],
-      setCurrentLapNumber = _useState18[1]; // horizontal, vertical
+      mapOffset = _useState12[0],
+      setMapOffset = _useState12[1]; // horizontal, vertical
 
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (props.Coords) {
-      var newBounds = checkNewBounds(props.Coords, minX, maxX, minZ, maxZ);
+    // if (props.Coords[props.Coords]) {
+    if (props.Coords[0]) {
+      var newBounds = checkNewBounds(props.Coords[props.Coords.length - 1], minX, maxX, minZ, maxZ);
       setMinX(newBounds[0]);
       setMaxX(newBounds[1]);
       setMinZ(newBounds[2]);
@@ -5151,25 +5136,22 @@ function Map(props) {
       setMapDimensions(CalculateMapDimensions(minX, maxX, minZ, maxZ));
       setMapOffset(CalculateMapOffset(minX, minZ));
     }
-  }, [props]); // let boxOutline = d3.line()([[minX,minZ], [minX,maxZ], [maxX,maxZ], [maxX,minZ], [minX,minZ]])
-
-  if (props.LapNumber !== currentLapNumber) {
-    // save coords as last lap path
-    //setLastLapPath(currentLapPath)
-    setCurrentLapPath([props.Coords]);
-    setCurrentLapNumber(props.LapNumber);
-  } else {
-    // push new coords to current lap path
-    currentLapPath.push(props.Coords);
-  }
-
+  }, [props]);
+  var boxOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()([[minX, minZ], [minX, maxZ], [maxX, maxZ], [maxX, minZ], [minX, minZ]]);
+  var lapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.Coords);
+  console.log(props.Coords.length);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     viewBox: "".concat(mapOffset[0], " ").concat(mapOffset[1], " ").concat(mapDimensions[0], " ").concat(mapDimensions[1]),
     style: {
       backgroundColor: 'transparent'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: CreateMap(currentLapPath),
+    d: boxOutline,
+    stroke: "grey",
+    fill: "transparent",
+    strokeWidth: "8"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: lapOutline,
     stroke: "white",
     fill: "transparent",
     strokeWidth: "10"
