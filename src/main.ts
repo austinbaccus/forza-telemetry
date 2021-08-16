@@ -1,17 +1,19 @@
-const url = require("url");
-const path = require("path");
-const { ConnectionBuilder } = require("electron-cgi");
+const url = require("url")
+const path = require("path")
+const { ConnectionBuilder } = require("electron-cgi")
 
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron"
+
 
 let window: BrowserWindow | null;
 
 const createWindow = () => {
   window = new BrowserWindow({
-    width: 1920, 
-    height: 1080,
-    backgroundColor: '#0A0A0A',
+    width: 1000, 
+    height: 600,
+    backgroundColor: '#121212',//'#0A0A0A',
     autoHideMenuBar: true,
+    titleBarStyle: "hidden",
     webPreferences:{
       nodeIntegration: true, // these two preferences are critical
       contextIsolation: false // to getting data from main to dashboard
@@ -61,7 +63,7 @@ connection.on('new-data', (data: any) => {
   // send the data from forza to the front-end
   window.webContents.send("new-data-for-dashboard", dataObj);
   // log this event
-  console.log(`${dataObj.Steer}`);
+  console.log(`${dataObj.PositionX} ... ${dataObj.PositionZ}`);
 });
 
 connection.on('switch-recording-mode', (data: any) => {

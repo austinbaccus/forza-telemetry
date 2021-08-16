@@ -495,10 +495,12 @@ var window;
 
 var createWindow = function createWindow() {
   window = new electron__WEBPACK_IMPORTED_MODULE_0__.BrowserWindow({
-    width: 1920,
-    height: 1080,
-    backgroundColor: '#0A0A0A',
+    width: 1000,
+    height: 600,
+    backgroundColor: '#121212',
+    //'#0A0A0A',
     autoHideMenuBar: true,
+    titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true,
       // these two preferences are critical
@@ -541,7 +543,7 @@ connection.on('new-data', function (data) {
 
   window.webContents.send("new-data-for-dashboard", dataObj); // log this event
 
-  console.log("".concat(dataObj.Steer));
+  console.log("".concat(dataObj.PositionX, " ... ").concat(dataObj.PositionZ));
 });
 connection.on('switch-recording-mode', function (data) {
   // parse data into object

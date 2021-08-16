@@ -66,10 +66,6 @@ const Wheels: FC<WheelsProps> = ({
                     <td style={{width: '60px'}}><WheelVisual Temp={RrTemp}/></td>
                 </tr>
             </table>
-            
-
-
-
         </div>
     );
 };

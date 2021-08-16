@@ -67,20 +67,4 @@ function Accelerometer(props) {
     );
 }
 
-// function Accelerometer(props) {
-//     return (
-//         <div style={centerStyle}>
-//             <div style={blockStyle}>
-//                 <div style={backgroundStyle}>
-//                     <Circle r={150} fill={{color:'transparent'}} stroke={{color:'#4D4D4D'}} strokeWidth={1} />
-//                 </div>
-//                 <div style={foregroundStyle}>
-//                     <Polyline points={GetAccelerometerPosition(props.X, props.Z)} fill={{color:'#34495e'}} stroke={{color:'#4D4D4D'}} strokeWidth={3} />
-//                 </div>
-                
-//             </div>
-//         </div>
-//     );
-// }
-
 export default Accelerometer;

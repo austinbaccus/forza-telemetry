@@ -1,24 +1,27 @@
 import React, { useState } from "react";
+import { ThemeProvider } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { ipcRenderer } from "electron";
 import { Button } from 'react-bootstrap';
-import { Grid, Paper, Typography } from "@material-ui/core";
 import CSS from 'csstype';
 
 import Accelerometer from './Accelerometer';
-import General from "./General";
-import Wheels from "./Wheel/Wheels";
-import Card from "./Card";
 import Laps from "./Laps";
 import Tires from "./Tires";
 import Steering from "./Steering";
 import Map from "./Map";
 
-const column: CSS.Properties = {
-    float: 'left',
-    width: '33.33%',
-    height: '98vh',
-    backgroundColor: '#000000'
-};
+const darkTheme = createTheme({
+    palette: {
+        type: 'dark',
+        primary: {
+            main: '#FA6868',
+        },
+        secondary: {
+            main: '#0BEA99',
+        },
+    },
+});
 
 const sideColumnStyle: CSS.Properties = {
     float: 'left',
@@ -49,7 +52,6 @@ const basicTelemetryContainerStyle: CSS.Properties = {
     borderRadius: '5px'
 };
 const mainHudContainerStyle: CSS.Properties = {
-
 };
 
 type Packet = {
@@ -156,91 +158,22 @@ type Packet = {
     NormalAiBrakeDifference: number
 }
 
-// export const Dashboard = () => {
-//     const [data, setData] = useState<Packet>();
-//     const [recordingState, setRecordingState] = useState('Record');
-
-//     React.useEffect( () => {
-//         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
-//             setData(message);  
-//         });               
-//     }, []);
-//     return (
-//         <div>
-//             <div style={column}>
-//                 <Card>
-//                     <Button onClick={() => { 
-//                         ipcRenderer.send('switch-recording-mode', '');
-//                         setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
-//                         }}>
-//                         {recordingState}
-//                     </Button>
-//                     <p>TimestampMS: {data ? data.TimestampMS : 0}</p>
-//                 </Card>
-//             </div>
-            
-//             <div style={column}>
-//                 <Card>
-//                     <Accelerometer 
-//                         X={data ? data.AccelerationX : 0}
-//                         Y={data ? data.AccelerationY : 0}
-//                         Z={data ? data.AccelerationZ : 0}
-//                     />
-//                 </Card>
-//                 <Card>
-//                     <Wheels
-//                         FlTemp={data ? data.TireTempFl : 0}
-//                         FrTemp={data ? data.TireTempFr : 0}
-//                         RlTemp={data ? data.TireTempRl : 0}
-//                         RrTemp={data ? data.TireTempRr : 0}
-//                         FlSlip={data ? data.TireCombinedSlipFrontLeft : 0}
-//                         FrSlip={data ? data.TireCombinedSlipFrontRight : 0}
-//                         RlSlip={data ? data.TireCombinedSlipRearLeft : 0}
-//                         RrSlip={data ? data.TireCombinedSlipRearRight : 0}
-//                         FlSlipRatio={data ? data.TireSlipRatioFrontLeft : 0}
-//                         FrSlipRatio={data ? data.TireSlipRatioFrontRight : 0}
-//                         RlSlipRatio={data ? data.TireSlipRatioRearLeft : 0}
-//                         RrSlipRatio={data ? data.TireSlipRatioRearRight : 0}
-//                         FlSlipAngle={data ? data.TireSlipAngleFrontLeft : 0}
-//                         FrSlipAngle={data ? data.TireSlipAngleFrontRight : 0}
-//                         RlSlipAngle={data ? data.TireSlipAngleRearLeft : 0}
-//                         RrSlipAngle={data ? data.TireSlipAngleRearRight : 0}
-//                     />
-//                 </Card>
-//             </div>
-            
-//             <div style={column}>
-//                 <Card>
-//                     <General 
-//                         PositionX={data ? data.PositionX : 0}
-//                         PositionY={data ? data.PositionY : 0}
-//                         PositionZ={data ? data.PositionZ : 0}
-//                         Steer={data ? data.Steer : 0} 
-//                         Gear={data ? data.Gear : 0} 
-//                         Fuel={data ? data.Fuel : 0} 
-//                         Distance={data ? data.Distance : 0} 
-//                         EngineMaxRpm={data ? data.EngineMaxRpm : 0}
-//                         EngineIdleRpm={data ? data.EngineIdleRpm : 0}
-//                         CurrentEngineRpm={data ? data.CurrentEngineRpm : 0}
-//                     />
-//                 </Card>
-//             </div>
-//         </div>
-//     );
-// };
-
-export const Dashboard = () => {
+export const Dashboard2 = () => {
     const [data, setData] = useState<Packet>();
     const [recordingState, setRecordingState] = useState('Record');
+    const [lapCoords, setLapCoords] = useState([]);
+    const [lapNumber, setLapNumber] = useState(-1);
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
-            setData(message);  
+            setData(message);
+            setLapNumber(message.Lap)
+            setLapCoords([message.PositionX, message.PositionZ])
         });               
     }, []);
 
     return (
-        <div>
+        <ThemeProvider theme={darkTheme}>
             {/* left column */}
             <div style={sideColumnStyle}>
                 <div style={accelerometerContainerStyle}>
@@ -250,7 +183,9 @@ export const Dashboard = () => {
                         Z={data ? data.AccelerationZ : 0}
                     />
                 </div>
-            <div style={lapContainerStyle}><Laps/></div>
+                <div style={lapContainerStyle}>
+                    <Laps/>
+                </div>
             </div>
 
             {/* center column */}
@@ -259,10 +194,14 @@ export const Dashboard = () => {
                     <Button onClick={() => { 
                         ipcRenderer.send('switch-recording-mode', '');
                         setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
-                        }}>
+                    }}>
                         {recordingState}
                     </Button>
-                    <p>TimestampMS: {data ? data.TimestampMS : 0}</p>
+                    <p style={{color: 'white'}}>TimestampMS: {data ? data.TimestampMS : 0}</p>
+                    <p style={{color: 'white'}}>Coords: {lapCoords}</p>
+                    <p style={{color: 'white'}}>X: {data ? data.PositionX : 0}</p>
+                    <p style={{color: 'white'}}>Y: {data ? data.PositionY : 0}</p>
+                    <p style={{color: 'white'}}>Z: {data ? data.PositionZ : 0}</p>
                 </div>
             </div>
 
@@ -292,8 +231,10 @@ export const Dashboard = () => {
                     />
                 </div>
                 <div style={basicTelemetryContainerStyle}><Steering/></div>
-                <div style={basicTelemetryContainerStyle}><Map/></div>
+                <div style={basicTelemetryContainerStyle}>
+                    <Map Coords={lapCoords} LapNumber={lapNumber}/>
+                </div>
             </div>
-        </div>
+        </ThemeProvider>
     );
 };

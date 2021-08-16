@@ -40,8 +40,11 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
     "bootstrap": "^5.0.2",
     "custom-electron-titlebar": "^3.2.7",
+    "d3": "^7.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.4",
     "react-dom": "^17.0.2",
