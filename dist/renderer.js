@@ -4752,23 +4752,26 @@ var Dashboard2 = function Dashboard2() {
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
       _useState8 = _slicedToArray(_useState7, 2),
       lapNumber = _useState8[0],
-      setLapNumber = _useState8[1];
+      setLapNumber = _useState8[1]; // React.useEffect( () => {
+  // }, []);
 
-  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
-    electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
-      setData(message);
 
-      if (message.Lap !== lapNumber) {
-        setLapCoords([]);
-      } else {}
+  electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
+    setData(message);
+    var c = lapCoords;
+    c.push([message.PositionX, message.PositionZ]);
+    setLapCoords(c);
+  });
 
-      setLapNumber(message.Lap);
-      var c = lapCoords;
-      c.push([message.PositionX, message.PositionZ]);
-      setLapCoords(c); //setLapCoords(lapCoords.push([message.PositionX, message.PositionZ]))
-      //let c = [...lapCoords,[message.PositionX, message.PositionZ]]
-    });
-  }, []);
+  if (data && data.Lap !== lapNumber) {
+    console.log('NEW LAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
+    setLapNumber(data.Lap);
+    var c = [[data.PositionX, data.PositionZ]];
+    setLapCoords(c); //lapCoords.length = 0
+
+    console.log(lapCoords);
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__.default, {
     theme: darkTheme
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5080,7 +5083,7 @@ function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
 }
 
 function CalculateMapOffset(minX, minZ) {
-  return [minX * 1.0, minZ * 1.1];
+  return [minX * 1.1, minZ * 1.1];
 }
 
 function checkNewBounds(newCoords, minX, maxX, minZ, maxZ) {
@@ -5139,7 +5142,6 @@ function Map(props) {
   }, [props]);
   var boxOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()([[minX, minZ], [minX, maxZ], [maxX, maxZ], [maxX, minZ], [minX, minZ]]);
   var lapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.Coords);
-  console.log(props.Coords.length);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     viewBox: "".concat(mapOffset[0], " ").concat(mapOffset[1], " ").concat(mapDimensions[0], " ").concat(mapDimensions[1]),
     style: {

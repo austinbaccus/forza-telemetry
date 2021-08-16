@@ -166,25 +166,21 @@ export const Dashboard2 = () => {
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
-            setData(message);
-            if (message.Lap !== lapNumber) {
-                setLapCoords([])
-            } else {
-                
-            }
-            setLapNumber(message.Lap)
-
+            setData(message)
             let c = lapCoords
             c.push([message.PositionX, message.PositionZ])
             setLapCoords(c)
-
-            //setLapCoords(lapCoords.push([message.PositionX, message.PositionZ]))
-
-            //let c = [...lapCoords,[message.PositionX, message.PositionZ]]
-        });               
+        });          
     }, []);
-
-
+    
+    if (data && data.Lap !== lapNumber) {
+        console.log('NEW LAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
+        setLapNumber(data.Lap)
+        let c = [[data.PositionX, data.PositionZ]]
+        setLapCoords(c)
+        //lapCoords.length = 0
+        console.log(lapCoords)
+    }
 
     return (
         <ThemeProvider theme={darkTheme}>

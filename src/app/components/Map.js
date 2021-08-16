@@ -24,7 +24,7 @@ function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
 }
 
 function CalculateMapOffset(minX, minZ) {
-    return [minX*1.0,minZ*1.1]
+    return [minX*1.1,minZ*1.1]
 }
 
 function checkNewBounds(newCoords, minX, maxX, minZ, maxZ) {
@@ -59,7 +59,6 @@ function Map(props) {
 
     let boxOutline = d3.line()([[minX,minZ], [minX,maxZ], [maxX,maxZ], [maxX,minZ], [minX,minZ]])
     let lapOutline = d3.line()(props.Coords)
-    console.log(props.Coords.length)
 
     return (
         <div>
