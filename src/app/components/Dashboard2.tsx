@@ -158,30 +158,41 @@ type Packet = {
     NormalAiBrakeDifference: number
 }
 
+var dataCount = 0
+
 export const Dashboard2 = () => {
     const [data, setData] = useState<Packet>();
     const [recordingState, setRecordingState] = useState('Record');
     const [lapCoords, setLapCoords] = useState([]);
+    const [prevLapCoords, setPrevLapCoords] = useState([])
     const [lapNumber, setLapNumber] = useState(-1);
     const [lapData, setLapData] = useState([[]])
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
             setData(message)
-            let c = lapCoords
-            c.push([message.PositionX, -message.PositionZ])
-            setLapCoords(c)
+
+            dataCount = dataCount + 1
+            if (dataCount % 10 == 0) {
+                let c = lapCoords
+                c.push([message.PositionX, -message.PositionZ])
+                setLapCoords(c)
+            }
         });          
     }, []);
-    
+
     // new lap
     if (data && data.Lap !== lapNumber) {
         setLapNumber(data.Lap)
+
+        // prevLapCoords need to be updated, new lap just started
+        let c = lapCoords
+        setPrevLapCoords(c)
+
+        // delete current lapCoords
         lapCoords.length = 0
+
         lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)])
-        // if (lapNumber === 0) {
-        //     lapData.length = 0
-        // }
     }
 
     return (
@@ -247,7 +258,7 @@ export const Dashboard2 = () => {
                 </div>
                 <div style={basicTelemetryContainerStyle}><Steering/></div>
                 <div style={basicTelemetryContainerStyle}>
-                    <Map Coords={lapCoords} LapNumber={lapNumber}/>
+                    <Map Coords={lapCoords} PrevLapCoords={prevLapCoords} LapNumber={lapNumber}/>
                 </div>
             </div>
         </ThemeProvider>

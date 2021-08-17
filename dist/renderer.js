@@ -4733,6 +4733,7 @@ var basicTelemetryContainerStyle = {
   borderRadius: '5px'
 };
 var mainHudContainerStyle = {};
+var dataCount = 0;
 var Dashboard2 = function Dashboard2() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
       _useState2 = _slicedToArray(_useState, 2),
@@ -4749,31 +4750,45 @@ var Dashboard2 = function Dashboard2() {
       lapCoords = _useState6[0],
       setLapCoords = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState8 = _slicedToArray(_useState7, 2),
-      lapNumber = _useState8[0],
-      setLapNumber = _useState8[1];
+      prevLapCoords = _useState8[0],
+      setPrevLapCoords = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([[]]),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
       _useState10 = _slicedToArray(_useState9, 2),
-      lapData = _useState10[0],
-      setLapData = _useState10[1];
+      lapNumber = _useState10[0],
+      setLapNumber = _useState10[1];
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([[]]),
+      _useState12 = _slicedToArray(_useState11, 2),
+      lapData = _useState12[0],
+      setLapData = _useState12[1];
 
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
       setData(message);
-      var c = lapCoords;
-      c.push([message.PositionX, -message.PositionZ]);
-      setLapCoords(c);
+      dataCount = dataCount + 1;
+
+      if (dataCount % 10 == 0) {
+        var c = lapCoords;
+        c.push([message.PositionX, -message.PositionZ]);
+        setLapCoords(c);
+      }
     });
   }, []); // new lap
 
   if (data && data.Lap !== lapNumber) {
-    setLapNumber(data.Lap);
+    setLapNumber(data.Lap); // new prevLapCoords
+
+    var c = lapCoords; //console.log('1 new prev lap coords!')
+
+    setPrevLapCoords(c); //console.log(prevLapCoords)
+    //console.log('1 end')
+    // delete current lapCoords
+
     lapCoords.length = 0;
-    lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)]); // if (lapNumber === 0) {
-    //     lapData.length = 0
-    // }
+    lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)]);
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__.default, {
@@ -4847,6 +4862,7 @@ var Dashboard2 = function Dashboard2() {
     style: basicTelemetryContainerStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Map__WEBPACK_IMPORTED_MODULE_6__.default, {
     Coords: lapCoords,
+    PrevLapCoords: prevLapCoords,
     LapNumber: lapNumber
   }))));
 };
@@ -4909,7 +4925,9 @@ var Laps = function Laps(_ref) {
     className: classes.table,
     size: "small",
     "aria-label": "a dense table"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableHead__WEBPACK_IMPORTED_MODULE_5__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableHead__WEBPACK_IMPORTED_MODULE_5__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__.default, {
+    key: 'header'
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
     style: {
       color: '#C54242'
     }
@@ -5162,7 +5180,15 @@ function Map(props) {
       setMapOffset(CalculateMapOffset(minX, minZ));
     }
   }, [props]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    console.log('2 previous lap coords');
+    console.log(props.PrevLapCoords);
+    prevLapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.PrevLapCoords);
+    console.log('2 previous lap outline');
+    console.log(prevLapOutline);
+  }, [props.PrevLapCoords]);
   var boxOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()([[minX, minZ], [minX, maxZ], [maxX, maxZ], [maxX, minZ], [minX, minZ]]);
+  var prevLapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.PrevLapCoords);
   var lapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.Coords);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     viewBox: "".concat(mapOffset[0], " ").concat(mapOffset[1], " ").concat(mapDimensions[0], " ").concat(mapDimensions[1]),
@@ -5170,6 +5196,11 @@ function Map(props) {
       backgroundColor: 'transparent'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: prevLapOutline,
+    stroke: "grey",
+    fill: "transparent",
+    strokeWidth: "6"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
     d: lapOutline,
     stroke: "white",
     fill: "transparent",

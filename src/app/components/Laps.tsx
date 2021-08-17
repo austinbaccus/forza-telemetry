@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { makeStyles, createTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,53 +16,46 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(lap: number, time: number, split: number) {
-  return { lap, time, split };
+type LapProps = {
+  LapNumber: number, 
+  LapTime: string, 
+  PreviousLaps: number[][]
 }
 
-const rows = [
-  createData(18, 71.8, 16.0),
-  createData(17, 59.9, 3.7),
-  createData(16, 72.1, 16.0),
-  createData(15, 65.5, 6.0),
-  createData(14, 63.2, 9.0),
-  createData(13, 71.8, 16.0),
-  createData(12, 59.9, 3.7),
-  createData(11, 72.1, 16.0),
-  createData(10, 65.5, 6.0),
-  createData(9, 63.2, 9.0),
-  createData(8, 71.8, 16.0),
-  createData(7, 59.9, 3.7),
-  createData(6, 72.1, 16.0),
-  createData(5, 65.5, 6.0),
-  createData(4, 63.2, 9.0),
-  createData(3, 71.8, 16.0),
-  createData(2, 59.9, 3.7),
-  createData(1, 72.1, 16.0),
-];
-
-export default function Laps() {
+const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
   const classes = useStyles();
+
+  while (Laps.length > 17) {
+    PreviousLaps.shift()
+  }
+
   return (
     <TableContainer style={{backgroundColor: '#171717'}} component={Paper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
-          <TableRow>
+          <TableRow key={'header'}>
             <TableCell style={{color: '#C54242'}}>LAP</TableCell>
             <TableCell align="left" style={{color: '#C54242'}}>TIME</TableCell>
             <TableCell align="right" style={{color: '#C54242'}}>SPLIT</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.lap}>
-              <TableCell component="th" scope="row">{row.lap}</TableCell>
-              <TableCell align="left">{row.time}</TableCell>
-              <TableCell align="right">{row.split}</TableCell>
+          <TableRow key={LapNumber}>
+            <TableCell component="th" scope="row">{LapNumber}</TableCell>
+            <TableCell align="left">{LapTime}</TableCell>
+            <TableCell align="right">...</TableCell>
+          </TableRow>
+          {PreviousLaps.map((row) => (
+            <TableRow key={row[0]}>
+              <TableCell component="th" scope="row">{row[0]+1}</TableCell>
+              <TableCell align="left">{row[1]}</TableCell>
+              <TableCell align="right">{row[2]}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default Laps;

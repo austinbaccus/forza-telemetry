@@ -62,12 +62,19 @@ function Map(props) {
         }
     }, [props])
 
+    // this doesn't work (it's supposed to place the prev lap path on the map every time a new lap is started)
+    useEffect(() => {
+       prevLapOutline = d3.line()(props.PrevLapCoords)
+    }, [props.PrevLapCoords])
+
     let boxOutline = d3.line()([[minX,minZ], [minX,maxZ], [maxX,maxZ], [maxX,minZ], [minX,minZ]])
+    let prevLapOutline = d3.line()(props.PrevLapCoords)
     let lapOutline = d3.line()(props.Coords)
 
     return (
         <div>
             <svg viewBox={`${mapOffset[0]} ${mapOffset[1]} ${mapDimensions[0]} ${mapDimensions[1]}`} style={{backgroundColor: 'transparent'}}>
+                <path d={prevLapOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
                 <path d={lapOutline} stroke="white" fill='transparent' strokeWidth='10'/>
             </svg>
         </div>
