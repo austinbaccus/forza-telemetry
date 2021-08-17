@@ -163,23 +163,25 @@ export const Dashboard2 = () => {
     const [recordingState, setRecordingState] = useState('Record');
     const [lapCoords, setLapCoords] = useState([]);
     const [lapNumber, setLapNumber] = useState(-1);
+    const [lapData, setLapData] = useState([[]])
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
             setData(message)
             let c = lapCoords
-            c.push([message.PositionX, message.PositionZ])
+            c.push([message.PositionX, -message.PositionZ])
             setLapCoords(c)
         });          
     }, []);
     
+    // new lap
     if (data && data.Lap !== lapNumber) {
-        console.log('NEW LAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
         setLapNumber(data.Lap)
-        let c = [[data.PositionX, data.PositionZ]]
-        setLapCoords(c)
-        //lapCoords.length = 0
-        console.log(lapCoords)
+        lapCoords.length = 0
+        lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)])
+        // if (lapNumber === 0) {
+        //     lapData.length = 0
+        // }
     }
 
     return (
@@ -194,7 +196,11 @@ export const Dashboard2 = () => {
                     />
                 </div>
                 <div style={lapContainerStyle}>
-                    <Laps/>
+                    <Laps 
+                        LapNumber={lapNumber + 1} 
+                        LapTime={data ? data.CurrentLapTime.toFixed(3) : '0.00'} 
+                        PreviousLaps={lapData}
+                    />
                 </div>
             </div>
 
@@ -208,10 +214,9 @@ export const Dashboard2 = () => {
                         {recordingState}
                     </Button>
                     <p style={{color: 'white'}}>TimestampMS: {data ? data.TimestampMS : 0}</p>
-                    {/* <p style={{color: 'white'}}>Coords: {lapCoords}</p> */}
-                    <p style={{color: 'white'}}>X: {data ? data.PositionX : 0}</p>
-                    <p style={{color: 'white'}}>Y: {data ? data.PositionY : 0}</p>
-                    <p style={{color: 'white'}}>Z: {data ? data.PositionZ : 0}</p>
+                    <p style={{color: 'white'}}>X: {data ? data.PositionX.toFixed(2) : 0}</p>
+                    <p style={{color: 'white'}}>Y: {data ? data.PositionY.toFixed(2) : 0}</p>
+                    <p style={{color: 'white'}}>Z: {data ? data.PositionZ.toFixed(2) : 0}</p>
                 </div>
             </div>
 

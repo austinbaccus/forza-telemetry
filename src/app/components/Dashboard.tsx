@@ -250,7 +250,7 @@ export const Dashboard = () => {
                         Z={data ? data.AccelerationZ : 0}
                     />
                 </div>
-            <div style={lapContainerStyle}><Laps/></div>
+            <div style={lapContainerStyle}>Laps</div>
             </div>
 
             {/* center column */}

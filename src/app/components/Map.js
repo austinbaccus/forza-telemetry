@@ -37,16 +37,21 @@ function checkNewBounds(newCoords, minX, maxX, minZ, maxZ) {
 }
 
 function Map(props) {
-    const [minX, setMinX] = useState(-10)
-    const [maxX, setMaxX] = useState(10)
-    const [minZ, setMinZ] = useState(-10)
-    const [maxZ, setMaxZ] = useState(10)
-    const [mapDimensions, setMapDimensions] = useState([13.44,10.00]) // width, height
-    const [mapOffset, setMapOffset] = useState([-5,-5]) // horizontal, vertical
+    const [minX, setMinX] = useState(0)
+    const [maxX, setMaxX] = useState(0)
+    const [minZ, setMinZ] = useState(0)
+    const [maxZ, setMaxZ] = useState(0)
+    const [mapDimensions, setMapDimensions] = useState([13.44,10.00])
+    const [mapOffset, setMapOffset] = useState([-1,-1])
     
     useEffect(() => {
-        // if (props.Coords[props.Coords]) {
         if (props.Coords[0]) {
+            if (props.Coords.length < 2) { 
+                setMinX(props.Coords[props.Coords.length-1][0] - 1)
+                setMaxX(props.Coords[props.Coords.length-1][0] + 1)
+                setMinZ(props.Coords[props.Coords.length-1][1] - 1)
+                setMaxZ(props.Coords[props.Coords.length-1][1] + 1)
+            }
             let newBounds = checkNewBounds(props.Coords[props.Coords.length-1], minX, maxX, minZ, maxZ)
             setMinX(newBounds[0])
             setMaxX(newBounds[1])
@@ -63,7 +68,6 @@ function Map(props) {
     return (
         <div>
             <svg viewBox={`${mapOffset[0]} ${mapOffset[1]} ${mapDimensions[0]} ${mapDimensions[1]}`} style={{backgroundColor: 'transparent'}}>
-                <path d={boxOutline} stroke="grey" fill='transparent' strokeWidth='8'/>
                 <path d={lapOutline} stroke="white" fill='transparent' strokeWidth='10'/>
             </svg>
         </div>

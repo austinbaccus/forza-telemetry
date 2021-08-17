@@ -4752,24 +4752,28 @@ var Dashboard2 = function Dashboard2() {
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
       _useState8 = _slicedToArray(_useState7, 2),
       lapNumber = _useState8[0],
-      setLapNumber = _useState8[1]; // React.useEffect( () => {
-  // }, []);
+      setLapNumber = _useState8[1];
 
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([[]]),
+      _useState10 = _slicedToArray(_useState9, 2),
+      lapData = _useState10[0],
+      setLapData = _useState10[1];
 
-  electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
-    setData(message);
-    var c = lapCoords;
-    c.push([message.PositionX, message.PositionZ]);
-    setLapCoords(c);
-  });
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
+    electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
+      setData(message);
+      var c = lapCoords;
+      c.push([message.PositionX, -message.PositionZ]);
+      setLapCoords(c);
+    });
+  }, []); // new lap
 
   if (data && data.Lap !== lapNumber) {
-    console.log('NEW LAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
     setLapNumber(data.Lap);
-    var c = [[data.PositionX, data.PositionZ]];
-    setLapCoords(c); //lapCoords.length = 0
-
-    console.log(lapCoords);
+    lapCoords.length = 0;
+    lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)]); // if (lapNumber === 0) {
+    //     lapData.length = 0
+    // }
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__.default, {
@@ -4784,7 +4788,11 @@ var Dashboard2 = function Dashboard2() {
     Z: data ? data.AccelerationZ : 0
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: lapContainerStyle
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Laps__WEBPACK_IMPORTED_MODULE_3__.default, null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Laps__WEBPACK_IMPORTED_MODULE_3__.default, {
+    LapNumber: lapNumber + 1,
+    LapTime: data ? data.CurrentLapTime.toFixed(3) : '0.00',
+    PreviousLaps: lapData
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: centerColumnStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: mainHudContainerStyle
@@ -4801,15 +4809,15 @@ var Dashboard2 = function Dashboard2() {
     style: {
       color: 'white'
     }
-  }, "X: ", data ? data.PositionX : 0), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+  }, "X: ", data ? data.PositionX.toFixed(2) : 0), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     style: {
       color: 'white'
     }
-  }, "Y: ", data ? data.PositionY : 0), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+  }, "Y: ", data ? data.PositionY.toFixed(2) : 0), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     style: {
       color: 'white'
     }
-  }, "Z: ", data ? data.PositionZ : 0))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, "Z: ", data ? data.PositionZ.toFixed(2) : 0))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: sideColumnStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: basicTelemetryContainerStyle
@@ -4854,7 +4862,7 @@ var Dashboard2 = function Dashboard2() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Laps)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/makeStyles.js");
@@ -4882,17 +4890,16 @@ var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__.default
   }
 });
 
-function createData(lap, time, split) {
-  return {
-    lap: lap,
-    time: time,
-    split: split
-  };
-}
-
-var rows = [createData(18, 71.8, 16.0), createData(17, 59.9, 3.7), createData(16, 72.1, 16.0), createData(15, 65.5, 6.0), createData(14, 63.2, 9.0), createData(13, 71.8, 16.0), createData(12, 59.9, 3.7), createData(11, 72.1, 16.0), createData(10, 65.5, 6.0), createData(9, 63.2, 9.0), createData(8, 71.8, 16.0), createData(7, 59.9, 3.7), createData(6, 72.1, 16.0), createData(5, 65.5, 6.0), createData(4, 63.2, 9.0), createData(3, 71.8, 16.0), createData(2, 59.9, 3.7), createData(1, 72.1, 16.0)];
-function Laps() {
+var Laps = function Laps(_ref) {
+  var LapNumber = _ref.LapNumber,
+      LapTime = _ref.LapTime,
+      PreviousLaps = _ref.PreviousLaps;
   var classes = useStyles();
+
+  while (Laps.length > 17) {
+    PreviousLaps.shift();
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableContainer__WEBPACK_IMPORTED_MODULE_2__.default, {
     style: {
       backgroundColor: '#171717'
@@ -4916,19 +4923,30 @@ function Laps() {
     style: {
       color: '#C54242'
     }
-  }, "SPLIT"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableBody__WEBPACK_IMPORTED_MODULE_8__.default, null, rows.map(function (row) {
+  }, "SPLIT"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableBody__WEBPACK_IMPORTED_MODULE_8__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__.default, {
+    key: LapNumber
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
+    component: "th",
+    scope: "row"
+  }, LapNumber), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
+    align: "left"
+  }, LapTime), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
+    align: "right"
+  }, "...")), PreviousLaps.map(function (row) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__.default, {
-      key: row.lap
+      key: row[0]
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
       component: "th",
       scope: "row"
-    }, row.lap), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
+    }, row[0] + 1), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
       align: "left"
-    }, row.time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
+    }, row[1]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
       align: "right"
-    }, row.split));
+    }, row[2]));
   }))));
-}
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Laps);
 
 /***/ }),
 
@@ -5096,22 +5114,22 @@ function checkNewBounds(newCoords, minX, maxX, minZ, maxZ) {
 }
 
 function Map(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-10),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
       minX = _useState2[0],
       setMinX = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(10),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
       _useState4 = _slicedToArray(_useState3, 2),
       maxX = _useState4[0],
       setMaxX = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-10),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
       _useState6 = _slicedToArray(_useState5, 2),
       minZ = _useState6[0],
       setMinZ = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(10),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
       _useState8 = _slicedToArray(_useState7, 2),
       maxZ = _useState8[0],
       setMaxZ = _useState8[1];
@@ -5119,18 +5137,22 @@ function Map(props) {
   var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([13.44, 10.00]),
       _useState10 = _slicedToArray(_useState9, 2),
       mapDimensions = _useState10[0],
-      setMapDimensions = _useState10[1]; // width, height
+      setMapDimensions = _useState10[1];
 
-
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([-5, -5]),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([-1, -1]),
       _useState12 = _slicedToArray(_useState11, 2),
       mapOffset = _useState12[0],
-      setMapOffset = _useState12[1]; // horizontal, vertical
-
+      setMapOffset = _useState12[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    // if (props.Coords[props.Coords]) {
     if (props.Coords[0]) {
+      if (props.Coords.length < 2) {
+        setMinX(props.Coords[props.Coords.length - 1][0] - 1);
+        setMaxX(props.Coords[props.Coords.length - 1][0] + 1);
+        setMinZ(props.Coords[props.Coords.length - 1][1] - 1);
+        setMaxZ(props.Coords[props.Coords.length - 1][1] + 1);
+      }
+
       var newBounds = checkNewBounds(props.Coords[props.Coords.length - 1], minX, maxX, minZ, maxZ);
       setMinX(newBounds[0]);
       setMaxX(newBounds[1]);
@@ -5148,11 +5170,6 @@ function Map(props) {
       backgroundColor: 'transparent'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: boxOutline,
-    stroke: "grey",
-    fill: "transparent",
-    strokeWidth: "8"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
     d: lapOutline,
     stroke: "white",
     fill: "transparent",
