@@ -4760,7 +4760,7 @@ var Dashboard2 = function Dashboard2() {
       lapNumber = _useState10[0],
       setLapNumber = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([[]]),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState12 = _slicedToArray(_useState11, 2),
       lapData = _useState12[0],
       setLapData = _useState12[1];
@@ -4770,7 +4770,7 @@ var Dashboard2 = function Dashboard2() {
       setData(message);
       dataCount = dataCount + 1;
 
-      if (dataCount % 10 == 0) {
+      if (dataCount % 5 == 0) {
         var c = lapCoords;
         c.push([message.PositionX, -message.PositionZ]);
         setLapCoords(c);
@@ -4779,16 +4779,26 @@ var Dashboard2 = function Dashboard2() {
   }, []); // new lap
 
   if (data && data.Lap !== lapNumber) {
-    setLapNumber(data.Lap); // new prevLapCoords
+    setLapNumber(data.Lap); // prevLapCoords need to be updated, new lap just started
 
-    var c = lapCoords; //console.log('1 new prev lap coords!')
+    var c = lapCoords;
+    setPrevLapCoords(c); // delete current lapCoords
 
-    setPrevLapCoords(c); //console.log(prevLapCoords)
-    //console.log('1 end')
-    // delete current lapCoords
+    lapCoords.length = 0; // log previous lap data
 
-    lapCoords.length = 0;
-    lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)]);
+    if (lapNumber != NaN && lapNumber != -1) {
+      lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)]);
+    } // update split times
+
+
+    for (var i = 0; i < lapData.length; i++) {
+      if (Number(lapData[i][1]) == data.BestLapTime) {
+        // this is the best time, so show no split time
+        lapData[i][2] = '';
+      } else {
+        lapData[i][2] = (Number(lapData[i][1]) - data.BestLapTime).toFixed(3);
+      }
+    }
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__.default, {
@@ -4840,6 +4850,7 @@ var Dashboard2 = function Dashboard2() {
     Pitch: data ? data.Pitch : 0,
     Yaw: data ? data.Yaw : 0,
     Roll: data ? data.Roll : 0,
+    Brake: data ? data.Brake : 0,
     FlTemp: data ? data.TireTempFl : 0,
     FrTemp: data ? data.TireTempFr : 0,
     RlTemp: data ? data.TireTempRl : 0,
@@ -4912,7 +4923,7 @@ var Laps = function Laps(_ref) {
       PreviousLaps = _ref.PreviousLaps;
   var classes = useStyles();
 
-  while (Laps.length > 17) {
+  while (PreviousLaps.length > 17) {
     PreviousLaps.shift();
   }
 
@@ -4950,7 +4961,7 @@ var Laps = function Laps(_ref) {
     align: "left"
   }, LapTime), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
     align: "right"
-  }, "...")), PreviousLaps.map(function (row) {
+  }, " ")), PreviousLaps.map(function (row) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__.default, {
       key: row[0]
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
@@ -5179,13 +5190,10 @@ function Map(props) {
       setMapDimensions(CalculateMapDimensions(minX, maxX, minZ, maxZ));
       setMapOffset(CalculateMapOffset(minX, minZ));
     }
-  }, [props]);
+  }, [props]); // this doesn't work (it's supposed to place the prev lap path on the map every time a new lap is started)
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    console.log('2 previous lap coords');
-    console.log(props.PrevLapCoords);
     prevLapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.PrevLapCoords);
-    console.log('2 previous lap outline');
-    console.log(prevLapOutline);
   }, [props.PrevLapCoords]);
   var boxOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()([[minX, minZ], [minX, maxZ], [maxX, maxZ], [maxX, minZ], [minX, minZ]]);
   var prevLapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.PrevLapCoords);
@@ -5246,20 +5254,169 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
 
-var dataContainerStyle = {
-  height: '25%'
+
+var sideColumnStyle = {
+  "float": 'left',
+  width: '25%',
+  height: '100%',
+  color: 'white'
+};
+var centerColumnStyle = {
+  "float": 'left',
+  width: '75%',
+  height: '100%'
+};
+var dataTopRowStyle = {
+  height: '25%',
+  textAlign: 'left',
+  margin: '18px 0px 0px 35px',
+  fontFamily: 'Roboto'
+};
+var dataRowStyle = {
+  height: '25%',
+  textAlign: 'left',
+  margin: '-2px 0px 0px 30px',
+  fontFamily: 'Roboto'
 };
 var dataValueStyle = {
-  color: '#C54242'
+  color: '#C54242',
+  fontSize: '24px'
 };
 var dataKeyStyle = {
-  color: '#4D4D4D'
+  color: 'grey',
+  fontSize: '12px'
+};
+var tireTableStyle = {
+  tableLayout: 'fixed',
+  height: '100%',
+  width: '80%'
+};
+var tireTableDataStyle = {
+  width: '50%'
 };
 
+function tempToScale(temp) {
+  var minTemp = 30;
+  var maxTemp = 300;
+  return Math.floor(765 * Math.min(1, Math.max(0, (temp - minTemp) / maxTemp)));
+}
+
+function toRgba(tempScaleValue) {
+  // tempScaleValue ranges from 0 to 765, 0 being the coldest
+  // first 255 - third value goes from 255 to 0
+  var thirdValue = 255 - Math.min(255, tempScaleValue); // second 255
+
+  var firstValue = tempScaleValue > 255 ? Math.min(255, tempScaleValue - 255) : 0; // third 255
+
+  var secondValue = tempScaleValue > 510 ? 255 - (tempScaleValue - 510) : 255;
+  return "rgba(".concat(firstValue, ",").concat(secondValue, ",").concat(thirdValue, ",1)");
+}
+
+function toHex(rgbaValue) {
+  // rgbaValue format: "rgba(0, 0, 0, 0.74)"
+  var rgb = rgbaValue.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
+      hex = rgb ? (rgb[1] | 1 << 8).toString(16).slice(1) + (rgb[2] | 1 << 8).toString(16).slice(1) + (rgb[3] | 1 << 8).toString(16).slice(1) : rgbaValue;
+  return "#".concat(hex);
+}
+
+function LeftTire(props) {
+  var t = props.Temp;
+  var tempScaleValue = tempToScale(t);
+  var rgb = toRgba(tempScaleValue);
+  var hex = toHex(rgb);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+    width: "100",
+    height: "100"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    x: "40",
+    y: "15",
+    width: "45",
+    height: "73",
+    rx: "10",
+    style: {
+      fill: hex,
+      stroke: '#1c87c9',
+      strokeWidth: '2'
+    }
+  })));
+}
+
+function RightTire(props) {
+  var t = props.Temp;
+  var tempScaleValue = tempToScale(t);
+  var rgb = toRgba(tempScaleValue);
+  var hex = toHex(rgb);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+    width: "100",
+    height: "100"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    x: "40",
+    y: "15",
+    width: "45",
+    height: "73",
+    rx: "10",
+    style: {
+      fill: hex,
+      stroke: '#1c87c9',
+      strokeWidth: '2'
+    }
+  })));
+}
+
 function Tires(props) {
-  var traction = 0.5;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: {
+      height: '100%'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: sideColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataTopRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, Number(180 * props.Pitch / Math.PI).toFixed(1), "\xB0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "PITCH")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, Number(180 * props.Yaw / Math.PI).toFixed(1), "\xB0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "YAW")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, Number(180 * props.Roll / Math.PI).toFixed(1), "\xB0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "ROLL")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, Number(100 * (props.Brake / 255)).toFixed(0), "%"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "BRAKE"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: centerColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
+    style: tireTableStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tbody", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: tireTableDataStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(LeftTire, {
+    Temp: props.FlTemp
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: tireTableDataStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RightTire, {
+    Temp: props.FrTemp
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: tireTableDataStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(LeftTire, {
+    Temp: props.RlTemp
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: tireTableDataStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RightTire, {
+    Temp: props.RrTemp
+  })))))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tires);

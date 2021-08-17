@@ -166,14 +166,14 @@ export const Dashboard2 = () => {
     const [lapCoords, setLapCoords] = useState([]);
     const [prevLapCoords, setPrevLapCoords] = useState([])
     const [lapNumber, setLapNumber] = useState(-1);
-    const [lapData, setLapData] = useState([[]])
+    const [lapData, setLapData] = useState([])
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
             setData(message)
 
             dataCount = dataCount + 1
-            if (dataCount % 10 == 0) {
+            if (dataCount % 5 == 0) {
                 let c = lapCoords
                 c.push([message.PositionX, -message.PositionZ])
                 setLapCoords(c)
@@ -192,7 +192,19 @@ export const Dashboard2 = () => {
         // delete current lapCoords
         lapCoords.length = 0
 
-        lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)])
+        // log previous lap data
+        if (lapNumber != NaN && lapNumber != -1) {
+            lapData.unshift([lapNumber, data.LastLapTime.toFixed(3), (data.LastLapTime - data.BestLapTime).toFixed(3)])
+        }
+
+        // update split times
+        for (var i = 0; i < lapData.length; i++) {
+            if (Number(lapData[i][1]) == data.BestLapTime) { // this is the best time, so show no split time
+                lapData[i][2] = ''
+            } else {
+                lapData[i][2] = (Number(lapData[i][1]) - data.BestLapTime).toFixed(3)
+            }
+        }
     }
 
     return (
@@ -238,6 +250,7 @@ export const Dashboard2 = () => {
                         Pitch={data ? data.Pitch : 0}
                         Yaw={data ? data.Yaw : 0}
                         Roll={data ? data.Roll : 0}
+                        Brake={data ? data.Brake : 0}
                         FlTemp={data ? data.TireTempFl : 0}
                         FrTemp={data ? data.TireTempFr : 0}
                         RlTemp={data ? data.TireTempRl : 0}

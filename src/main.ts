@@ -9,8 +9,8 @@ let window: BrowserWindow | null;
 
 const createWindow = () => {
   window = new BrowserWindow({
-    width: 1000, 
-    height: 600,
+    width: 1600, 
+    height: 1200,
     backgroundColor: '#121212',//'#0A0A0A',
     autoHideMenuBar: true,
     titleBarStyle: "hidden",

@@ -25,7 +25,7 @@ type LapProps = {
 const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
   const classes = useStyles();
 
-  while (Laps.length > 17) {
+  while (PreviousLaps.length > 17) {
     PreviousLaps.shift()
   }
 
@@ -43,7 +43,7 @@ const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
           <TableRow key={LapNumber}>
             <TableCell component="th" scope="row">{LapNumber}</TableCell>
             <TableCell align="left">{LapTime}</TableCell>
-            <TableCell align="right">...</TableCell>
+            <TableCell align="right"> </TableCell>
           </TableRow>
           {PreviousLaps.map((row) => (
             <TableRow key={row[0]}>
