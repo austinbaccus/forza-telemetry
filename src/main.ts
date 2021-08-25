@@ -2,7 +2,7 @@ const url = require("url")
 const path = require("path")
 const { ConnectionBuilder } = require("electron-cgi")
 
-import { app, BrowserWindow, ipcMain } from "electron"
+import { app, BrowserWindow, screen, ipcMain } from "electron"
 
 
 let window: BrowserWindow | null;
@@ -10,14 +10,14 @@ let window: BrowserWindow | null;
 const createWindow = () => {
   window = new BrowserWindow({
     width: 1600, 
-    height: 1200,
+    height: 1000,
     backgroundColor: '#121212',//'#0A0A0A',
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
     webPreferences:{
       nodeIntegration: true, // these two preferences are critical
       contextIsolation: false // to getting data from main to dashboard
-    }
+    },
   });
 
   window.loadURL(

@@ -1,5 +1,4 @@
-import React, { useState, useEffect }  from "react"
-import * as d3 from 'd3'
+import React from 'react'
 
 const sideColumnStyle = {
     float: 'left',
@@ -98,7 +97,6 @@ function RightTire(props) {
                 <rect x='40' y='15' width="45" height="73" rx="10" style={{fill:hex, stroke:'#1c87c9', strokeWidth:'2'}}/>
             </svg>
         </div>
-        
     );
 }
 
