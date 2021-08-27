@@ -261,7 +261,7 @@ export const Dashboard = () => {
                     <div style={mainHudTopStyle}>
                         <table style={{width: '100%', textAlign: 'center', fontWeight: 'normal'}}>
                             <tr>
-                                <td style={{width: '100%'}}>
+                                <td style={{}}>
                                     <div style={dataValueStyle}>
                                         <Button onClick={() => {  
                                             ipcRenderer.send('switch-recording-mode', ''); 
@@ -271,13 +271,34 @@ export const Dashboard = () => {
                                         </Button>
                                     </div>
                                 </td>
+                                <td style={{}}>
+                                    <div style={dataValueStyle}>
+                                        <Button onClick={() => { console.log('clicked!') }}>
+                                            Reset
+                                        </Button>
+                                    </div>
+                                </td>
+                                <td style={{}}>
+                                    <div style={dataValueStyle}>
+                                        <Button onClick={() => { console.log('clicked!') }}>
+                                            Fullscreen
+                                        </Button>
+                                    </div>
+                                </td>
+                                <td style={{}}>
+                                    <div style={dataValueStyle}>
+                                        <Button onClick={() => { console.log('clicked!') }}>
+                                            Settings
+                                        </Button>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                         
                     </div>
 
                     <div style={{height: '80%'}}>
-                        <Tach outerRadius={90} innerRadius={90} startAngle={0} endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI : 2 * Math.PI}/>
+                        <Tach outerRadius={90} innerRadius={90} startAngle={0} endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI * (340/360) : 2 * Math.PI * (280/360)}/>
                     </div>
 
                     <div style={mainHudBottomStyle}>

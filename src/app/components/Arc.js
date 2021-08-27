@@ -7,7 +7,9 @@ const Arc = ({
   outerRadius,
   innerRadius,
   startAngle,
-  endAngle
+  endAngle,
+  color,
+  strokeWidth
 }) => {
   const arcGenerator = d3.shape
     .arc()
@@ -18,9 +20,11 @@ const Arc = ({
 
   return (
     <div style={{width:'100%', height:'80vh'}}>
-        <svg viewBox={'-200 -200 400 400'} style={{maxHeight:'100%'}}>
-            <path d={arcGenerator()} stroke="#C54242" strokeWidth="3" fill="none"/>
-        </svg>
+      <svg viewBox={'-200 -200 400 400'} style={{maxHeight:'100%'}}>
+        <g transform="rotate(200 0 0)">
+          <path d={arcGenerator()} stroke={color} strokeWidth={strokeWidth} fill="none"/>
+        </g>
+      </svg>
     </div>
   );
 };

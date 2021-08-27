@@ -1,4 +1,5 @@
 import React from 'react'
+import * as d3 from 'd3'
 
 const sideColumnStyle = {
     float: 'left',
@@ -40,47 +41,33 @@ const tireTableDataStyle = {
     width: '50%'
 }
 
-function tempToScale(temp) {
-    let minTemp = 30
-    let maxTemp = 300
-    return Math.floor(765 * Math.min(1, Math.max(0, (temp - minTemp) / maxTemp)))
+// cold: 135 < x < 155
+// norm: 155 < x < 275
+// warm: 275 < x < 300
+// fire: 300 < x < 340
+function getQuadColorInterpolation(temp, color1, color2, color3, color4, coldLower, coldUpper, warmLower, warmUpper, hotLower, hotUpper) {
+
+    if (temp < warmLower && temp > warmUpper) {
+        return color2
+    } else if (temp >= hotLower) {
+        let x = Math.min(1, Math.max(0, (temp - hotLower) / (hotUpper - hotLower)))
+        return d3.interpolateLab(color3, color4)(x)
+    } else if (temp >= warmLower) {
+        let x = Math.min(1, Math.max(0, (temp - warmLower) / (warmUpper - warmLower)))
+        return d3.interpolateLab(color2, color3)(x)
+    } else {
+        let x = Math.min(1, Math.max(0, (temp - coldLower) / (coldUpper - coldLower)))
+        return d3.interpolateLab(color1, color2)(x)
+    }
 }
-
-function toRgba(tempScaleValue) {
-    // tempScaleValue ranges from 0 to 765, 0 being the coldest
-
-    // first 255 - third value goes from 255 to 0
-    let thirdValue = 255 - Math.min(255,tempScaleValue)
-
-    // second 255
-    let firstValue = tempScaleValue > 255 ?  Math.min(255,tempScaleValue - 255) : 0
-
-    // third 255
-    let secondValue = tempScaleValue > 510 ? 255 - (tempScaleValue - 510) : 255
-
-    return `rgba(${firstValue},${secondValue},${thirdValue},1)`
-}
-
-function toHex(rgbaValue) {
-    // rgbaValue format: "rgba(0, 0, 0, 0.74)"
-    var rgb = rgbaValue.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
-        hex = rgb ?
-        (rgb[1] | 1 << 8).toString(16).slice(1) +
-        (rgb[2] | 1 << 8).toString(16).slice(1) +
-        (rgb[3] | 1 << 8).toString(16).slice(1) : rgbaValue;
-  
-    return `#${hex}`;
-  }
 
 function LeftTire(props) {
     let t = props.Temp;
-    let tempScaleValue = tempToScale(t);
-    let rgb = toRgba(tempScaleValue);
-    let hex = toHex(rgb);
+    let color = getQuadColorInterpolation(t, '#3ABDBD', '#171717', 'orange', '#C54242', 135, 155, 275, 300, 300, 340)
     return (
         <div>
             <svg width="100" height="100">
-                <rect x='40' y ='15' width="45" height="73" rx="10" style={{fill:hex, stroke:'#1c87c9', strokeWidth:'2'}}/>
+                <rect x='40' y ='15' width="45" height="73" rx="10" style={{fill:color, stroke:'#4D4D4D', strokeWidth:'2'}}/>
             </svg>
         </div>
         
@@ -88,18 +75,15 @@ function LeftTire(props) {
 }
 function RightTire(props) {
     let t = props.Temp;
-    let tempScaleValue = tempToScale(t);
-    let rgb = toRgba(tempScaleValue);
-    let hex = toHex(rgb);
+    let color = getQuadColorInterpolation(t, '#3ABDBD', '#171717', 'orange', '#C54242', 135, 155, 275, 300, 300, 340)
     return (
         <div>
             <svg width="100" height="100">
-                <rect x='40' y='15' width="45" height="73" rx="10" style={{fill:hex, stroke:'#1c87c9', strokeWidth:'2'}}/>
+                <rect x='40' y='15' width="45" height="73" rx="10" style={{fill:color, stroke:'#4D4D4D', strokeWidth:'2'}}/>
             </svg>
         </div>
     );
 }
-
 function Tires(props) {
     return (
         <div style={{height: '100%'}}>

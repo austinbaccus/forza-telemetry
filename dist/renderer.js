@@ -4859,9 +4859,7 @@ var Dashboard = function Dashboard() {
       fontWeight: 'normal'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
-    style: {
-      width: '100%'
-    }
+    style: {}
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__.default, {
@@ -4869,7 +4867,31 @@ var Dashboard = function Dashboard() {
       electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.send('switch-recording-mode', '');
       setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
     }
-  }, recordingState)))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, recordingState))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: {}
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__.default, {
+    onClick: function onClick() {
+      console.log('clicked!');
+    }
+  }, "Reset"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: {}
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__.default, {
+    onClick: function onClick() {
+      console.log('clicked!');
+    }
+  }, "Fullscreen"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    style: {}
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__.default, {
+    onClick: function onClick() {
+      console.log('clicked!');
+    }
+  }, "Settings")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: {
       height: '80%'
     }
@@ -4877,7 +4899,7 @@ var Dashboard = function Dashboard() {
     outerRadius: 90,
     innerRadius: 90,
     startAngle: 0,
-    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI : 2 * Math.PI
+    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI * (340 / 360) : 2 * Math.PI * (280 / 360)
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: mainHudBottomStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
@@ -5196,7 +5218,9 @@ var Arc = function Arc(_ref) {
   var outerRadius = _ref.outerRadius,
       innerRadius = _ref.innerRadius,
       startAngle = _ref.startAngle,
-      endAngle = _ref.endAngle;
+      endAngle = _ref.endAngle,
+      color = _ref.color,
+      strokeWidth = _ref.strokeWidth;
   var arcGenerator = d3.shape.arc().outerRadius(outerRadius).innerRadius(innerRadius).startAngle(startAngle).endAngle(endAngle);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: {
@@ -5208,12 +5232,14 @@ var Arc = function Arc(_ref) {
     style: {
       maxHeight: '100%'
     }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+    transform: "rotate(200 0 0)"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
     d: arcGenerator(),
-    stroke: "#C54242",
-    strokeWidth: "3",
+    stroke: color,
+    strokeWidth: strokeWidth,
     fill: "none"
-  })));
+  }))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Arc);
@@ -5470,14 +5496,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Arc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Arc */ "./src/app/components/Arc.js");
 
 
+var centerStyle = {
+  margin: 'auto',
+  width: '100%',
+  height: '100%',
+  paddingTop: '17px'
+};
+var blockStyle = {
+  display: 'flex',
+  flexFlow: 'row nowrap'
+};
+var backgroundStyle = {
+  boxSizing: 'borderBox',
+  width: '100%',
+  flex: 'none'
+};
+var foregroundStyle = {
+  boxSizing: 'borderBox',
+  width: '100%',
+  flex: 'none',
+  marginLeft: '-100%'
+};
 
 function Tach(props) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Arc__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: centerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: blockStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: backgroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Arc__WEBPACK_IMPORTED_MODULE_1__.default, {
+    outerRadius: props.outerRadius - 5,
+    innerRadius: props.innerRadius - 5,
+    startAngle: 0,
+    endAngle: 2 * Math.PI * (320 / 360),
+    color: "#4D4D4D",
+    strokeWidth: "1"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: foregroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Arc__WEBPACK_IMPORTED_MODULE_1__.default, {
     outerRadius: props.outerRadius,
     innerRadius: props.innerRadius,
     startAngle: props.startAngle,
-    endAngle: props.endAngle
-  }));
+    endAngle: props.endAngle,
+    color: "#C54242",
+    strokeWidth: "5"
+  }))));
 }
 
 ;
@@ -5497,6 +5561,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
+
 
 var sideColumnStyle = {
   "float": 'left',
@@ -5536,37 +5602,31 @@ var tireTableStyle = {
 };
 var tireTableDataStyle = {
   width: '50%'
-};
+}; // cold: 135 < x < 155
+// norm: 155 < x < 275
+// warm: 275 < x < 300
+// fire: 300 < x < 340
 
-function tempToScale(temp) {
-  var minTemp = 30;
-  var maxTemp = 300;
-  return Math.floor(765 * Math.min(1, Math.max(0, (temp - minTemp) / maxTemp)));
-}
+function getQuadColorInterpolation(temp, color1, color2, color3, color4, coldLower, coldUpper, warmLower, warmUpper, hotLower, hotUpper) {
+  if (temp < warmLower && temp > warmUpper) {
+    return color2;
+  } else if (temp >= hotLower) {
+    var x = Math.min(1, Math.max(0, (temp - hotLower) / (hotUpper - hotLower)));
+    return d3__WEBPACK_IMPORTED_MODULE_1__.interpolateLab(color3, color4)(x);
+  } else if (temp >= warmLower) {
+    var _x = Math.min(1, Math.max(0, (temp - warmLower) / (warmUpper - warmLower)));
 
-function toRgba(tempScaleValue) {
-  // tempScaleValue ranges from 0 to 765, 0 being the coldest
-  // first 255 - third value goes from 255 to 0
-  var thirdValue = 255 - Math.min(255, tempScaleValue); // second 255
+    return d3__WEBPACK_IMPORTED_MODULE_1__.interpolateLab(color2, color3)(_x);
+  } else {
+    var _x2 = Math.min(1, Math.max(0, (temp - coldLower) / (coldUpper - coldLower)));
 
-  var firstValue = tempScaleValue > 255 ? Math.min(255, tempScaleValue - 255) : 0; // third 255
-
-  var secondValue = tempScaleValue > 510 ? 255 - (tempScaleValue - 510) : 255;
-  return "rgba(".concat(firstValue, ",").concat(secondValue, ",").concat(thirdValue, ",1)");
-}
-
-function toHex(rgbaValue) {
-  // rgbaValue format: "rgba(0, 0, 0, 0.74)"
-  var rgb = rgbaValue.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
-      hex = rgb ? (rgb[1] | 1 << 8).toString(16).slice(1) + (rgb[2] | 1 << 8).toString(16).slice(1) + (rgb[3] | 1 << 8).toString(16).slice(1) : rgbaValue;
-  return "#".concat(hex);
+    return d3__WEBPACK_IMPORTED_MODULE_1__.interpolateLab(color1, color2)(_x2);
+  }
 }
 
 function LeftTire(props) {
   var t = props.Temp;
-  var tempScaleValue = tempToScale(t);
-  var rgb = toRgba(tempScaleValue);
-  var hex = toHex(rgb);
+  var color = getQuadColorInterpolation(t, '#3ABDBD', '#171717', 'orange', '#C54242', 135, 155, 275, 300, 300, 340);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     width: "100",
     height: "100"
@@ -5577,8 +5637,8 @@ function LeftTire(props) {
     height: "73",
     rx: "10",
     style: {
-      fill: hex,
-      stroke: '#1c87c9',
+      fill: color,
+      stroke: '#4D4D4D',
       strokeWidth: '2'
     }
   })));
@@ -5586,9 +5646,7 @@ function LeftTire(props) {
 
 function RightTire(props) {
   var t = props.Temp;
-  var tempScaleValue = tempToScale(t);
-  var rgb = toRgba(tempScaleValue);
-  var hex = toHex(rgb);
+  var color = getQuadColorInterpolation(t, '#3ABDBD', '#171717', 'orange', '#C54242', 135, 155, 275, 300, 300, 340);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     width: "100",
     height: "100"
@@ -5599,8 +5657,8 @@ function RightTire(props) {
     height: "73",
     rx: "10",
     style: {
-      fill: hex,
-      stroke: '#1c87c9',
+      fill: color,
+      stroke: '#4D4D4D',
       strokeWidth: '2'
     }
   })));
