@@ -4763,6 +4763,19 @@ var dataKeyStyle = {
   fontSize: '12px'
 };
 var dataCount = 0;
+
+function secondsToTimeString(seconds) {
+  var ms = Math.floor(seconds * 1000 % 1000);
+  var s = Math.floor(seconds % 60);
+  var m = Math.floor(seconds * 1000 / (1000 * 60) % 60);
+  var strFormat = "MM:SS:XXX";
+  strFormat = strFormat.replace(/MM/, m + "");
+  strFormat = strFormat.replace(/SS/, s + "");
+  strFormat = strFormat.replace(/XXX/, ms.toFixed(3)); //toString().slice(0,3));
+
+  return strFormat;
+}
+
 var Dashboard = function Dashboard() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
       _useState2 = _slicedToArray(_useState, 2),
@@ -4793,6 +4806,11 @@ var Dashboard = function Dashboard() {
       _useState12 = _slicedToArray(_useState11, 2),
       lapData = _useState12[0],
       setLapData = _useState12[1];
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('N/A'),
+      _useState14 = _slicedToArray(_useState13, 2),
+      fuelPerLap = _useState14[0],
+      setFuelPerLap = _useState14[1];
 
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
@@ -4827,7 +4845,10 @@ var Dashboard = function Dashboard() {
       } else {
         lapData[i][2] = (Number(lapData[i][1]) - data.BestLapTime).toFixed(3);
       }
-    }
+    } // update fuel numbers
+
+
+    setFuelPerLap((100 * ((1 - data.Fuel) / lapNumber)).toFixed(2) + '%');
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_9__.default, {
@@ -4899,7 +4920,7 @@ var Dashboard = function Dashboard() {
     outerRadius: 90,
     innerRadius: 90,
     startAngle: 0,
-    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI * (340 / 360) : 2 * Math.PI * (280 / 360)
+    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI * (340 / 360) : 2 * Math.PI * (320 / 360)
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: mainHudBottomStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
@@ -4920,13 +4941,13 @@ var Dashboard = function Dashboard() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, data ? data.Fuel : 0)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+  }, data ? (data.Fuel * 100).toFixed(2) : 0.00, "%")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
     style: {
       width: '20%'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, data ? data.CurrentLapTime : '0:00.000')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+  }, data ? secondsToTimeString(data.CurrentLapTime) : '0:00.000')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
     style: {
       width: '20%'
     }
@@ -4948,7 +4969,7 @@ var Dashboard = function Dashboard() {
     style: dataKeyStyle
   }, "PIT IN")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
-  }, "LAP"))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, "MPG"))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: sideColumnStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: basicTelemetryContainerStyle

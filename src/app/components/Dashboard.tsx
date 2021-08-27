@@ -188,23 +188,43 @@ type Packet = {
 
 var dataCount = 0
 
+function secondsToTimeString(seconds:number) {
+    var ms = Math.floor((seconds*1000) % 1000).toFixed(3)
+    var s = Math.floor(seconds%60)
+    var m = Math.floor((seconds*1000/(1000*60))%60)
+    var strFormat = "MM:SS:XXX"
+
+    strFormat = strFormat.replace(/MM/, m+"")
+    strFormat = strFormat.replace(/SS/, s+"")
+    strFormat = strFormat.replace(/XXX/, ms.slice(0,3)) //toString().slice(0,3));
+    
+    return strFormat;
+}
+
 export const Dashboard = () => {
-    const [data, setData] = useState<Packet>();
-    const [recordingState, setRecordingState] = useState('Record');
-    const [lapCoords, setLapCoords] = useState([]);
+    const [data, setData] = useState<Packet>()
+    const [recordingState, setRecordingState] = useState('Record')
+    const [lapCoords, setLapCoords] = useState([])
     const [prevLapCoords, setPrevLapCoords] = useState([])
-    const [lapNumber, setLapNumber] = useState(-1);
+    const [lapNumber, setLapNumber] = useState(-1)
     const [lapData, setLapData] = useState([])
+    const [fuelPerLap, setFuelPerLap] = useState('N/A')
+    const [mpg, setMpg] = useState('0')
 
     React.useEffect( () => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
             setData(message)
 
             dataCount = dataCount + 1
+            // update map
             if (dataCount % 5 == 0) {
                 let c = lapCoords
                 c.push([message.PositionX, -message.PositionZ])
                 setLapCoords(c)
+            }
+            // update MPG
+            if (dataCount % 200 == 0) {
+                //TODO
             }
         });          
     }, []);
@@ -233,6 +253,9 @@ export const Dashboard = () => {
                 lapData[i][2] = (Number(lapData[i][1]) - data.BestLapTime).toFixed(3)
             }
         }
+
+        // update fuel numbers
+        setFuelPerLap((100 * ((1 - data.Fuel) / lapNumber)).toFixed(2)+'%')
     }
 
     return (
@@ -294,19 +317,18 @@ export const Dashboard = () => {
                                 </td>
                             </tr>
                         </table>
-                        
                     </div>
 
                     <div style={{height: '80%'}}>
-                        <Tach outerRadius={90} innerRadius={90} startAngle={0} endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI * (340/360) : 2 * Math.PI * (280/360)}/>
+                        <Tach outerRadius={90} innerRadius={90} startAngle={0} endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI * (340/360) : 2 * Math.PI * (320/360)}/>
                     </div>
 
                     <div style={mainHudBottomStyle}>
                         <table style={{width: '100%', textAlign: 'center', fontWeight: 'normal'}}>
                             <tr>
-                                <td style={{width: '20%'}}><div style={dataValueStyle}>N/A</div></td>
-                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? data.Fuel : 0}</div></td>
-                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? data.CurrentLapTime : '0:00.000'}</div></td>
+                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? fuelPerLap : 'N/A'}</div></td>
+                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? (data.Fuel*100).toFixed(2) : 0.00}%</div></td>
+                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? secondsToTimeString(data.CurrentLapTime) : '0:00.000'}</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>N/A</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? data.Lap : 1}</div></td>
                             </tr>
@@ -315,7 +337,7 @@ export const Dashboard = () => {
                                 <td><div style={dataKeyStyle}>FUEL</div></td>
                                 <td><div style={dataKeyStyle}>CURRENT LAP</div></td>
                                 <td><div style={dataKeyStyle}>PIT IN</div></td>
-                                <td><div style={dataKeyStyle}>LAP</div></td>
+                                <td><div style={dataKeyStyle}>MPG</div></td>
                             </tr>
                         </table>
                     </div>
