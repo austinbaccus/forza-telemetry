@@ -76,6 +76,7 @@ function Map(props) {
             <svg viewBox={`${mapOffset[0]} ${mapOffset[1]} ${mapDimensions[0]} ${mapDimensions[1]}`} style={{backgroundColor: 'transparent'}}>
                 <path d={prevLapOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
                 <path d={lapOutline} stroke="white" fill='transparent' strokeWidth='10'/>
+                {/* <path d={boxOutline} stroke="grey" fill='transparent' strokeWidth='6'/> */}
             </svg>
         </div>
     );

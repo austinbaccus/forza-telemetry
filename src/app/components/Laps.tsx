@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useEffect } from 'react';
 import { makeStyles, createTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -25,8 +25,12 @@ type LapProps = {
 const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
   const classes = useStyles();
 
-  while (PreviousLaps.length > 17) {
-    PreviousLaps.shift()
+  var visibleLaps = new Array<Array<number>>();
+  for (var i = 0; i < PreviousLaps.length; i++) { // 17
+    visibleLaps.push(PreviousLaps[i])
+  }
+  while (visibleLaps.length > 17) {
+    visibleLaps.shift()
   }
 
   return (
@@ -45,7 +49,7 @@ const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
             <TableCell align="left">{LapTime}</TableCell>
             <TableCell align="right"> </TableCell>
           </TableRow>
-          {PreviousLaps.map((row) => (
+          {visibleLaps.map((row) => (
             <TableRow key={row[0]}>
               <TableCell component="th" scope="row">{row[0]+1}</TableCell>
               <TableCell align="left">{row[1]}</TableCell>

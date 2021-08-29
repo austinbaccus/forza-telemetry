@@ -4765,13 +4765,13 @@ var dataKeyStyle = {
 var dataCount = 0;
 
 function secondsToTimeString(seconds) {
-  var ms = Math.floor(seconds * 1000 % 1000);
+  var ms = Math.floor(seconds * 1000 % 1000).toFixed(3);
   var s = Math.floor(seconds % 60);
   var m = Math.floor(seconds * 1000 / (1000 * 60) % 60);
   var strFormat = "MM:SS:XXX";
   strFormat = strFormat.replace(/MM/, m + "");
   strFormat = strFormat.replace(/SS/, s + "");
-  strFormat = strFormat.replace(/XXX/, ms.toFixed(3)); //toString().slice(0,3));
+  strFormat = strFormat.replace(/XXX/, ms.slice(0, 3)); //toString().slice(0,3));
 
   return strFormat;
 }
@@ -4812,18 +4812,65 @@ var Dashboard = function Dashboard() {
       fuelPerLap = _useState14[0],
       setFuelPerLap = _useState14[1];
 
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('0'),
+      _useState16 = _slicedToArray(_useState15, 2),
+      mpg = _useState16[0],
+      setMpg = _useState16[1];
+
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([0, 0, 0]),
+      _useState18 = _slicedToArray(_useState17, 2),
+      previousCoords = _useState18[0],
+      setPreviousCoords = _useState18[1];
+
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+      _useState20 = _slicedToArray(_useState19, 2),
+      previousFuel = _useState20[0],
+      setPreviousFuel = _useState20[1];
+
+  var setPrevFuel = function setPrevFuel(fuel) {
+    setPreviousFuel(fuel);
+  };
+
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     electron__WEBPACK_IMPORTED_MODULE_1__.ipcRenderer.on('new-data-for-dashboard', function (event, message) {
       setData(message);
-      dataCount = dataCount + 1;
+      dataCount = dataCount + 1; // update map
 
       if (dataCount % 5 == 0) {
         var c = lapCoords;
         c.push([message.PositionX, -message.PositionZ]);
         setLapCoords(c);
+      } // update MPG
+
+
+      if (dataCount % 50 == 0) {
+        // distance travelled = starting coords 
+        var x1 = message.PositionX;
+        var y1 = message.PositionY;
+        var z1 = message.PositionZ;
+        var x2 = previousCoords[0];
+        var y2 = previousCoords[1];
+        var z2 = previousCoords[2];
+        var distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+        previousCoords[0] = message.PositionX;
+        previousCoords[1] = message.PositionY;
+        previousCoords[2] = message.PositionZ; // convert to miles
+
+        distance = distance * 0.00062137 * 1609.344; // gallons consumed
+
+        var fuelUsed = previousFuel - message.Fuel; // convert to gallons
+
+        fuelUsed = fuelUsed * 13; // 13 gallons is the typical sized fuel tank for a car
+
+        setMpg((distance / fuelUsed).toFixed(0));
       }
     });
-  }, []); // new lap
+  }, []);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
+    if (data) {
+      setPreviousFuel(data.Fuel);
+    }
+  }, [mpg]); // new lap
 
   if (data && data.Lap !== lapNumber) {
     setLapNumber(data.Lap); // prevLapCoords need to be updated, new lap just started
@@ -4841,6 +4888,8 @@ var Dashboard = function Dashboard() {
     for (var i = 0; i < lapData.length; i++) {
       if (Number(lapData[i][1]) == data.BestLapTime) {
         // this is the best time, so show no split time
+        lapData[i][2] = '';
+      } else if (Math.abs(Number(lapData[i][1]) - data.BestLapTime).toFixed(3) == '0.000') {
         lapData[i][2] = '';
       } else {
         lapData[i][2] = (Number(lapData[i][1]) - data.BestLapTime).toFixed(3);
@@ -4935,13 +4984,13 @@ var Dashboard = function Dashboard() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, "N/A")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+  }, data ? fuelPerLap : 'N/A')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
     style: {
       width: '20%'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, data ? (data.Fuel * 100).toFixed(2) : 0.00, "%")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+  }, data ? (data.Fuel * 100).toFixed(3) : 100.000, "%")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
     style: {
       width: '20%'
     }
@@ -4959,7 +5008,7 @@ var Dashboard = function Dashboard() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, data ? data.Lap : 1))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, data ? mpg : 1))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "FUEL/LAP")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
@@ -5055,9 +5104,15 @@ var Laps = function Laps(_ref) {
       LapTime = _ref.LapTime,
       PreviousLaps = _ref.PreviousLaps;
   var classes = useStyles();
+  var visibleLaps = new Array();
 
-  while (PreviousLaps.length > 17) {
-    PreviousLaps.shift();
+  for (var i = 0; i < PreviousLaps.length; i++) {
+    // 17
+    visibleLaps.push(PreviousLaps[i]);
+  }
+
+  while (visibleLaps.length > 17) {
+    visibleLaps.shift();
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableContainer__WEBPACK_IMPORTED_MODULE_2__.default, {
@@ -5094,7 +5149,7 @@ var Laps = function Laps(_ref) {
     align: "left"
   }, LapTime), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
     align: "right"
-  }, " ")), PreviousLaps.map(function (row) {
+  }, " ")), visibleLaps.map(function (row) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableRow__WEBPACK_IMPORTED_MODULE_6__.default, {
       key: row[0]
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_material_ui_core_TableCell__WEBPACK_IMPORTED_MODULE_7__.default, {
@@ -5460,25 +5515,25 @@ function Steering(props) {
     style: dataTopRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, props.Power), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, Math.abs(Math.max(0, (props.Power / 745.699872).toFixed(0)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "POWER")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, props.Torque), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, Math.abs(Math.max(0, props.Torque * 0.73756).toFixed(0))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "TORQUE")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, props.Throttle, "%"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, (props.Throttle / 255 * 100).toFixed(0), "%"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "THROTTLE")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, props.Boost), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, props.Boost.toFixed(1)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "BOOST"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: centerColumnStyle

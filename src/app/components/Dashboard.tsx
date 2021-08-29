@@ -210,8 +210,12 @@ export const Dashboard = () => {
     const [lapData, setLapData] = useState([])
     const [fuelPerLap, setFuelPerLap] = useState('N/A')
     const [mpg, setMpg] = useState('0')
+    const [previousCoords, setPreviousCoords] = useState([0,0,0])
+    const [previousFuel, setPreviousFuel] = useState(1)
 
-    React.useEffect( () => {
+    const setPrevFuel = (fuel:number) => { setPreviousFuel(fuel) }
+
+    React.useEffect(() => {
         ipcRenderer.on('new-data-for-dashboard', (event:any, message:any) => { 
             setData(message)
 
@@ -223,11 +227,39 @@ export const Dashboard = () => {
                 setLapCoords(c)
             }
             // update MPG
-            if (dataCount % 200 == 0) {
-                //TODO
+            if (dataCount % 50 == 0) {
+                // distance travelled = starting coords 
+                let x1 = message.PositionX
+                let y1 = message.PositionY
+                let z1 = message.PositionZ
+                let x2 = previousCoords[0]
+                let y2 = previousCoords[1]
+                let z2 = previousCoords[2]
+                let distance = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2) + Math.pow(z2-z1, 2))
+                
+                previousCoords[0] = message.PositionX
+                previousCoords[1] = message.PositionY
+                previousCoords[2] = message.PositionZ
+
+                // convert to miles
+                distance = distance * 0.00062137 * 1609.344
+
+                // gallons consumed
+                let fuelUsed = previousFuel - message.Fuel
+
+                // convert to gallons
+                fuelUsed = fuelUsed * 13 // 13 gallons is the typical sized fuel tank for a car
+
+                setMpg((distance/fuelUsed).toFixed(0))
             }
         });          
-    }, []);
+    }, [])
+
+    React.useEffect(() => {
+        if (data) {
+            setPreviousFuel(data.Fuel)
+        }
+    }, [mpg])
 
     // new lap
     if (data && data.Lap !== lapNumber) {
@@ -248,6 +280,8 @@ export const Dashboard = () => {
         // update split times
         for (var i = 0; i < lapData.length; i++) {
             if (Number(lapData[i][1]) == data.BestLapTime) { // this is the best time, so show no split time
+                lapData[i][2] = ''
+            } else if (Math.abs(Number(lapData[i][1]) - data.BestLapTime).toFixed(3) == '0.000') {
                 lapData[i][2] = ''
             } else {
                 lapData[i][2] = (Number(lapData[i][1]) - data.BestLapTime).toFixed(3)
@@ -327,10 +361,10 @@ export const Dashboard = () => {
                         <table style={{width: '100%', textAlign: 'center', fontWeight: 'normal'}}>
                             <tr>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? fuelPerLap : 'N/A'}</div></td>
-                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? (data.Fuel*100).toFixed(2) : 0.00}%</div></td>
+                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? (data.Fuel*100).toFixed(3) : 100.000}%</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? secondsToTimeString(data.CurrentLapTime) : '0:00.000'}</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>N/A</div></td>
-                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? data.Lap : 1}</div></td>
+                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? mpg : 1}</div></td>
                             </tr>
                             <tr>
                                 <td><div style={dataKeyStyle}>FUEL/LAP</div></td>

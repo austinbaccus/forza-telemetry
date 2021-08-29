@@ -37,19 +37,19 @@ function Steering(props) {
         <div style={{height: '100%'}}>
             <div style={sideColumnStyle}>
                 <div style={dataTopRowStyle}>
-                    <div style={dataValueStyle}>{props.Power}</div>
+                    <div style={dataValueStyle}>{Math.abs(Math.max(0, (props.Power / 745.699872).toFixed(0)))}</div>
                     <div style={dataKeyStyle}>POWER</div>
                 </div>
                 <div style={dataRowStyle}>
-                    <div style={dataValueStyle}>{props.Torque}</div>
+                    <div style={dataValueStyle}>{Math.abs(Math.max(0, props.Torque * 0.73756).toFixed(0))}</div>
                     <div style={dataKeyStyle}>TORQUE</div>
                 </div>
                 <div style={dataRowStyle}>
-                    <div style={dataValueStyle}>{props.Throttle}%</div>
+                    <div style={dataValueStyle}>{((props.Throttle/255)*100).toFixed(0)}%</div>
                     <div style={dataKeyStyle}>THROTTLE</div>
                 </div>
                 <div style={dataRowStyle}>
-                    <div style={dataValueStyle}>{props.Boost}</div>
+                    <div style={dataValueStyle}>{props.Boost.toFixed(1)}</div>
                     <div style={dataKeyStyle}>BOOST</div>
                 </div>
             </div>
