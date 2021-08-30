@@ -30,3 +30,5 @@ Record and Display Telemetry from Forza Motorsport 7, Horizon 4, and Horizon 5.
 Because Forza calculates fuel consumption in a very strange way. Also, Forza cars have an unknown amount of fuel, so calculating the Miles Per Gallon figure is a bit tricky. The app assumes that each car has roughly 13 gallons of fuel to arrive at a number for MPG (13 gallons of fuel is a typical amount for a road car).
 ### Why is the app running slowly?
 Most likely the map has too much data to render. Adjust the map performance options in the Settings menu to compensate.
+### Why do some things look out of place? 
+This app looks best when it's in a 1920x1080 window (and looks even better in fullscreen mode). When the window deviates from this size, some visual elements might be placed incorrectly.
