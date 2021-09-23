@@ -5,7 +5,7 @@ const centerStyle = {
   margin: 'auto',
   width: '100%',
   height: '100%',
-  paddingTop: '17px',
+  marginTop: '-40px',
 };
 const blockStyle = {
   display: 'flex', 
@@ -30,7 +30,7 @@ const foregroundNumbersStyle = {
   fontFamily: 'Roboto',
   color: '#C54242'
 }
-const sss = {
+const numbersContainer = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -77,7 +77,7 @@ function Tach(props) {
           />
         </div>
         <div style={foregroundNumbersStyle}>
-          <div style={sss}>
+          <div style={numbersContainer}>
             <div style={child}>
               <div style={rpm}>{props.rpm}</div>
               <div style={gear}>{props.gear}</div>

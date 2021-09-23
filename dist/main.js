@@ -543,7 +543,7 @@ connection.on('new-data', function (data) {
 
   window.webContents.send("new-data-for-dashboard", dataObj); // log this event
 
-  console.log("".concat(dataObj.Power / 745.699872, " ... ").concat(dataObj.Torque));
+  console.log("".concat(dataObj.Steer));
 });
 connection.on('switch-recording-mode', function (data) {
   // parse data into object

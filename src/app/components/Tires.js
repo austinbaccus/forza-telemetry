@@ -10,7 +10,7 @@ const sideColumnStyle = {
 const centerColumnStyle = {
     float: 'left',
     width: '75%',
-    height: '100%'
+    height: '100%',
 };
 const dataTopRowStyle = { 
     height: '25%',
@@ -36,6 +36,7 @@ const tireTableStyle = {
     tableLayout: 'fixed',
     height: '100%',
     width: '80%',
+    marginLeft: '22px'
 }
 const tireTableDataStyle = {
     width: '50%'

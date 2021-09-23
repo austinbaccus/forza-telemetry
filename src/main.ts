@@ -63,7 +63,7 @@ connection.on('new-data', (data: any) => {
   // send the data from forza to the front-end
   window.webContents.send("new-data-for-dashboard", dataObj);
   // log this event
-  console.log(`${dataObj.Power / 745.699872} ... ${dataObj.Torque}`);
+  console.log(`${dataObj.Steer}`);
 });
 
 connection.on('switch-recording-mode', (data: any) => {

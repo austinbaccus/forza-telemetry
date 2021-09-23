@@ -4746,7 +4746,8 @@ var mainHudTopStyle = {
 };
 var mainHudBottomStyle = {
   height: '10%',
-  borderRadius: '5px'
+  borderRadius: '5px',
+  marginTop: '60px'
 };
 var dataRowStyle = {
   height: '25%',
@@ -4765,13 +4766,12 @@ var dataKeyStyle = {
 var dataCount = 0;
 
 function secondsToTimeString(seconds) {
-  var ms = Math.floor(seconds * 1000 % 1000).toFixed(3);
   var s = Math.floor(seconds % 60);
   var m = Math.floor(seconds * 1000 / (1000 * 60) % 60);
-  var strFormat = "MM:SS:XXX";
+  var strFormat = "MM:SS"; // "MM:SS:XXX"
+
   strFormat = strFormat.replace(/MM/, m + "");
-  strFormat = strFormat.replace(/SS/, s + "");
-  strFormat = strFormat.replace(/XXX/, ms.slice(0, 3)); //toString().slice(0,3));
+  strFormat = strFormat.replace(/SS/, s + ""); // strFormat = strFormat.replace(/XXX/, ms.slice(0,3)) //toString().slice(0,3));
 
   return strFormat;
 }
@@ -4999,7 +4999,7 @@ var Dashboard = function Dashboard() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, data ? secondsToTimeString(data.CurrentLapTime) : '0:00.000')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+  }, data ? secondsToTimeString(data.CurrentLapTime) : '0:00')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
     style: {
       width: '20%'
     }
@@ -5049,11 +5049,15 @@ var Dashboard = function Dashboard() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: basicTelemetryContainerStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Steering__WEBPACK_IMPORTED_MODULE_5__.default, {
-    Power: data ? data.Power : 0,
-    Torque: data ? data.Torque : 0,
-    Throttle: data ? data.Accelerator : 0,
-    Steering: data ? data.Steer : 0,
-    Boost: data ? data.Boost : 0
+    power: data ? data.Power : 0,
+    torque: data ? data.Torque : 0,
+    throttle: data ? data.Accelerator : 0,
+    steering: data ? data.Steer : 0,
+    boost: data ? data.Boost : 0,
+    outerRadius: 90,
+    innerRadius: 90,
+    startAngle: 0,
+    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI * (340 / 360) : 2 * Math.PI * (320 / 360)
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: basicTelemetryContainerStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Map__WEBPACK_IMPORTED_MODULE_6__.default, {
@@ -5311,8 +5315,7 @@ var Arc = function Arc(_ref) {
   var arcGenerator = d3.shape.arc().outerRadius(outerRadius).innerRadius(innerRadius).startAngle(startAngle).endAngle(endAngle);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: {
-      width: '100%',
-      height: '80vh'
+      width: '100%'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     viewBox: '-200 -200 400 400',
@@ -5482,6 +5485,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Arc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Arc */ "./src/app/components/Arc.js");
+
 
 var sideColumnStyle = {
   "float": 'left',
@@ -5492,7 +5497,34 @@ var sideColumnStyle = {
 var centerColumnStyle = {
   "float": 'left',
   width: '75%',
+  height: '100%',
+  marginLeft: '-10px'
+};
+var centerStyle = {
+  margin: 'auto',
+  width: '100%',
   height: '100%'
+};
+var blockStyle = {
+  display: 'flex',
+  flexFlow: 'row nowrap',
+  height: '100%',
+  maxHeight: '100%'
+};
+var backgroundStyle = {
+  boxSizing: 'borderBox',
+  width: '100%',
+  flex: 'none',
+  height: '336px',
+  maxHeight: '100%'
+};
+var foregroundStyle = {
+  boxSizing: 'borderBox',
+  width: '100%',
+  flex: 'none',
+  marginLeft: '-100%',
+  height: '336px',
+  maxHeight: '100%'
 };
 var dataTopRowStyle = {
   height: '25%',
@@ -5515,6 +5547,11 @@ var dataKeyStyle = {
   fontSize: '12px'
 };
 
+function GetSteeringAngle(angle, x) {
+  var percentSteeringAngle = (angle + 127.0) / 255.0;
+  return percentSteeringAngle * 2 * Math.PI * (321.25 / 360) + x;
+}
+
 function Steering(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: {
@@ -5526,42 +5563,61 @@ function Steering(props) {
     style: dataTopRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, Math.abs(Math.max(0, (props.Power / 745.699872).toFixed(0)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, Math.abs(Math.max(0, (props.power / 745.699872).toFixed(0)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "POWER")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, Math.abs(Math.max(0, props.Torque * 0.73756).toFixed(0))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, Math.abs(Math.max(0, props.torque * 0.73756).toFixed(0))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "TORQUE")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, (props.Throttle / 255 * 100).toFixed(0), "%"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, (props.throttle / 255 * 100).toFixed(0), "%"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "THROTTLE")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataRowStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataValueStyle
-  }, props.Boost.toFixed(1)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, props.boost.toFixed(1)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: dataKeyStyle
   }, "BOOST"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: centerColumnStyle
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: centerStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: blockStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: backgroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Arc__WEBPACK_IMPORTED_MODULE_1__.default, {
+    outerRadius: 140,
+    innerRadius: 140,
+    startAngle: 0,
+    endAngle: 2 * Math.PI * (320 / 360),
+    color: "#4D4D4D",
+    strokeWidth: "20"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: foregroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Arc__WEBPACK_IMPORTED_MODULE_1__.default, {
+    outerRadius: 125,
+    innerRadius: 125,
+    startAngle: 0,
+    endAngle: 2 * Math.PI * (320 / 360),
+    color: "#4D4D4D",
+    strokeWidth: "3"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: foregroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Arc__WEBPACK_IMPORTED_MODULE_1__.default, {
     height: "100%",
-    width: "100%"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: " M 163 293 A 100 100 0 1 1 237 293",
-    stroke: "yellow",
-    strokeWidth: "5",
-    fill: "none"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: " M 176 124 A 100 100 256 0 1 237 128",
-    stroke: "green",
-    strokeWidth: "5",
-    fill: "none"
-  }))));
+    outerRadius: 160,
+    innerRadius: 160,
+    startAngle: GetSteeringAngle(props.steering, -0.2),
+    endAngle: GetSteeringAngle(props.steering, 0.2),
+    color: "#C54242",
+    strokeWidth: "10"
+  }))))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Steering);
@@ -5587,7 +5643,7 @@ var centerStyle = {
   margin: 'auto',
   width: '100%',
   height: '100%',
-  paddingTop: '17px'
+  marginTop: '-40px'
 };
 var blockStyle = {
   display: 'flex',
@@ -5612,7 +5668,7 @@ var foregroundNumbersStyle = {
   fontFamily: 'Roboto',
   color: '#C54242'
 };
-var sss = {
+var numbersContainer = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -5660,7 +5716,7 @@ function Tach(props) {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: foregroundNumbersStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    style: sss
+    style: numbersContainer
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: child
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5726,7 +5782,8 @@ var dataKeyStyle = {
 var tireTableStyle = {
   tableLayout: 'fixed',
   height: '100%',
-  width: '80%'
+  width: '80%',
+  marginLeft: '22px'
 };
 var tireTableDataStyle = {
   width: '50%'

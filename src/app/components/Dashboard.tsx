@@ -10,7 +10,6 @@ import Laps from "./Laps";
 import Tires from "./Tires";
 import Steering from "./Steering";
 import Map from "./Map";
-import Tachometer from "./Tachometer";
 import Tach from "./Tach";
 
 const darkTheme = createTheme({
@@ -65,7 +64,8 @@ const mainHudTopStyle: CSS.Properties = {
 }
 const mainHudBottomStyle: CSS.Properties = {
     height: '10%',
-    borderRadius: '5px'
+    borderRadius: '5px',
+    marginTop: '60px',
 }
 const dataRowStyle = { 
     height: '25%',
@@ -189,14 +189,13 @@ type Packet = {
 var dataCount = 0
 
 function secondsToTimeString(seconds:number) {
-    var ms = Math.floor((seconds*1000) % 1000).toFixed(3)
     var s = Math.floor(seconds%60)
     var m = Math.floor((seconds*1000/(1000*60))%60)
-    var strFormat = "MM:SS:XXX"
+    var strFormat = "MM:SS" // "MM:SS:XXX"
 
     strFormat = strFormat.replace(/MM/, m+"")
     strFormat = strFormat.replace(/SS/, s+"")
-    strFormat = strFormat.replace(/XXX/, ms.slice(0,3)) //toString().slice(0,3));
+    // strFormat = strFormat.replace(/XXX/, ms.slice(0,3)) //toString().slice(0,3));
     
     return strFormat;
 }
@@ -370,7 +369,7 @@ export const Dashboard = () => {
                             <tr>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? fuelPerLap : 'N/A'}</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? (data.Fuel*100).toFixed(3) : 100.000}%</div></td>
-                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? secondsToTimeString(data.CurrentLapTime) : '0:00.000'}</div></td>
+                                <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? secondsToTimeString(data.CurrentLapTime) : '0:00'}</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>N/A</div></td>
                                 <td style={{width: '20%'}}><div style={dataValueStyle}>{data ? mpg : 1}</div></td>
                             </tr>
@@ -413,7 +412,17 @@ export const Dashboard = () => {
                     />
                 </div>
                 <div style={basicTelemetryContainerStyle}>
-                    <Steering Power={data ? data.Power : 0} Torque={data ? data.Torque : 0} Throttle={data ? data.Accelerator : 0} Steering={data ? data.Steer : 0} Boost={data ? data.Boost : 0}/>
+                    <Steering 
+                        power={data ? data.Power : 0} 
+                        torque={data ? data.Torque : 0} 
+                        throttle={data ? data.Accelerator : 0} 
+                        steering={data ? data.Steer : 0} 
+                        boost={data ? data.Boost : 0}
+                        outerRadius={90} 
+                        innerRadius={90} 
+                        startAngle={0} 
+                        endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI * (340/360) : 2 * Math.PI * (320/360)} 
+                    />
                 </div>
                 <div style={basicTelemetryContainerStyle}>
                     <Map Coords={lapCoords} PrevLapCoords={prevLapCoords} LapNumber={lapNumber}/>
