@@ -22,15 +22,32 @@ type LapProps = {
   PreviousLaps: number[][]
 }
 
+type Lap = {
+  LapNumber: number,
+  Time: string,
+  Split: string
+}
+
 const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
   const classes = useStyles();
 
-  var visibleLaps = new Array<Array<number>>();
-  for (var i = 0; i < PreviousLaps.length; i++) { // 17
-    visibleLaps.push(PreviousLaps[i])
+  var visibleLaps = new Array<Lap>()
+  var lapCap = 16
+
+  for (var i = 0; i < PreviousLaps.length; i++) { 
+    if (i > 0 && PreviousLaps[i][0] !== PreviousLaps[i-1][0] - 1) {
+      break
+    }
+
+    visibleLaps.push({ 
+      LapNumber: PreviousLaps[i][0]+1, 
+      Time: PreviousLaps[i][1]+'', 
+      Split: PreviousLaps[i][2]+''
+    })
   }
-  while (visibleLaps.length > 17) {
-    visibleLaps.shift()
+
+  if (visibleLaps.length > lapCap) {
+    visibleLaps.splice(lapCap, visibleLaps.length - lapCap)
   }
 
   return (
@@ -50,10 +67,10 @@ const Laps: React.FC<LapProps> = ({LapNumber, LapTime, PreviousLaps}) => {
             <TableCell align="right"> </TableCell>
           </TableRow>
           {visibleLaps.map((row) => (
-            <TableRow key={row[0]}>
-              <TableCell component="th" scope="row">{row[0]+1}</TableCell>
-              <TableCell align="left">{row[1]}</TableCell>
-              <TableCell align="right">{row[2]}</TableCell>
+            <TableRow key={row.LapNumber}>
+              <TableCell component="th" scope="row">{row.LapNumber}</TableCell>
+              <TableCell align="left">{row.Time}</TableCell>
+              <TableCell align="right">{row.Split}</TableCell>
             </TableRow>
           ))}
         </TableBody>
