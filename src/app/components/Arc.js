@@ -19,7 +19,7 @@ const Arc = ({
     .endAngle(endAngle);
 
   return (
-    <div style={{width:'100%', height:'80vh'}}>
+    <div style={{width:'100%'}}>
       <svg viewBox={'-200 -200 400 400'} style={{maxHeight:'100%'}}>
         <g transform="rotate(200 0 0)">
           <path d={arcGenerator()} stroke={color} strokeWidth={strokeWidth} fill="none"/>
