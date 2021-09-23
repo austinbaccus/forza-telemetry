@@ -32,3 +32,5 @@ Because Forza calculates fuel consumption in a very strange way. Also, Forza car
 Most likely the map has too much data to render. Adjust the map performance options in the Settings menu to compensate.
 ### Why do some things look out of place? 
 This app looks best when it's in a 1920x1080 window (and looks even better in fullscreen mode). When the window deviates from this size, some visual elements might be placed incorrectly.
+### Can I use this app with an Xbox?
+Not yet. That is a feature I'd like to implement eventually.
