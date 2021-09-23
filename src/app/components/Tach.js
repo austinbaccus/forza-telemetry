@@ -22,6 +22,35 @@ const foregroundStyle = {
   flex: 'none', 
   marginLeft: '-100%' 
 };
+const foregroundNumbersStyle = {
+  boxSizing: 'borderBox', 
+  width: '100%', 
+  flex: 'none', 
+  marginLeft: '-100%',
+  fontFamily: 'Roboto',
+  color: '#C54242'
+}
+const sss = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%'
+}
+const child = {
+  textAlign: 'center'
+}
+const rpm = {
+  fontSize: '40px',
+  marginTop: '270px'
+}
+const gear = {
+  fontSize: '72px',
+  marginTop: '120px'
+}
+const speed = {
+  fontSize: '30px',
+  marginTop: '15px'
+}
 
 function Tach(props) {
   return (
@@ -46,6 +75,15 @@ function Tach(props) {
             color='#C54242'
             strokeWidth='5'
           />
+        </div>
+        <div style={foregroundNumbersStyle}>
+          <div style={sss}>
+            <div style={child}>
+              <div style={rpm}>{props.rpm}</div>
+              <div style={gear}>{props.gear}</div>
+              <div style={speed}>{props.speed}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

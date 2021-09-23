@@ -4969,7 +4969,10 @@ var Dashboard = function Dashboard() {
     outerRadius: 90,
     innerRadius: 90,
     startAngle: 0,
-    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI * (340 / 360) : 2 * Math.PI * (320 / 360)
+    endAngle: data ? data.CurrentEngineRpm / data.EngineMaxRpm * 2 * Math.PI * (340 / 360) : 2 * Math.PI * (320 / 360),
+    rpm: data ? Math.round(data.CurrentEngineRpm).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0,
+    gear: data ? data.Gear == 0 ? 'R' : data.Gear : 'N',
+    speed: data ? Math.abs(Math.round(data.Speed * 2.237)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: mainHudBottomStyle
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
@@ -5105,7 +5108,7 @@ var Laps = function Laps(_ref) {
       PreviousLaps = _ref.PreviousLaps;
   var classes = useStyles();
   var visibleLaps = new Array();
-  var lapCap = 2;
+  var lapCap = 16;
 
   for (var i = 0; i < PreviousLaps.length; i++) {
     if (i > 0 && PreviousLaps[i][0] !== PreviousLaps[i - 1][0] - 1) {
@@ -5601,6 +5604,35 @@ var foregroundStyle = {
   flex: 'none',
   marginLeft: '-100%'
 };
+var foregroundNumbersStyle = {
+  boxSizing: 'borderBox',
+  width: '100%',
+  flex: 'none',
+  marginLeft: '-100%',
+  fontFamily: 'Roboto',
+  color: '#C54242'
+};
+var sss = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%'
+};
+var child = {
+  textAlign: 'center'
+};
+var rpm = {
+  fontSize: '40px',
+  marginTop: '270px'
+};
+var gear = {
+  fontSize: '72px',
+  marginTop: '120px'
+};
+var speed = {
+  fontSize: '30px',
+  marginTop: '15px'
+};
 
 function Tach(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5625,7 +5657,19 @@ function Tach(props) {
     endAngle: props.endAngle,
     color: "#C54242",
     strokeWidth: "5"
-  }))));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: foregroundNumbersStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: sss
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: child
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: rpm
+  }, props.rpm), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: gear
+  }, props.gear), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: speed
+  }, props.speed))))));
 }
 
 ;

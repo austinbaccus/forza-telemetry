@@ -11,7 +11,7 @@ const createWindow = () => {
   window = new BrowserWindow({
     width: 1600, 
     height: 1000,
-    backgroundColor: '#121212',//'#0A0A0A',
+    backgroundColor: '#121212', //'#0A0A0A',
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
     webPreferences:{
