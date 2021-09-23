@@ -354,7 +354,15 @@ export const Dashboard = () => {
                     </div>
 
                     <div style={{height: '80%'}}>
-                        <Tach outerRadius={90} innerRadius={90} startAngle={0} endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI * (340/360) : 2 * Math.PI * (320/360)}/>
+                        <Tach 
+                            outerRadius={90} 
+                            innerRadius={90} 
+                            startAngle={0} 
+                            endAngle={data ? (data.CurrentEngineRpm / data.EngineMaxRpm) * 2 * Math.PI * (340/360) : 2 * Math.PI * (320/360)} 
+                            rpm={data ? Math.round(data.CurrentEngineRpm).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                            gear={data ? data.Gear == 0 ? 'R': data.Gear : 'N'}
+                            speed={data ? Math.abs(Math.round(data.Speed * 2.237)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                        />
                     </div>
 
                     <div style={mainHudBottomStyle}>
