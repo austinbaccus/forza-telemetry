@@ -15,7 +15,7 @@ const centerColumnStyle = {
 const dataTopRowStyle = { 
     height: '25%',
     textAlign: 'left',
-    margin: '18px 0px 0px 35px',
+    margin: '18px 0px 0px 30px',
     fontFamily: 'Roboto'
 }
 const dataRowStyle = { 
