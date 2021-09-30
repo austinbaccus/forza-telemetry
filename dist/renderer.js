@@ -8462,6 +8462,18 @@ var foregroundStyle = {
   flex: 'none',
   marginLeft: '-100%'
 };
+var dataContainer = {
+  height: '100%',
+  width: '100%',
+  position: 'relative'
+};
+var numberStyle = {
+  position: 'absolute',
+  right: '-50px',
+  bottom: '0px',
+  color: '#C54242',
+  fontSize: '24px'
+};
 
 function GetAccelerometerPosition(x, z, radius) {
   var xSign = x >= 0 ? 1 : -1;
@@ -8522,7 +8534,13 @@ function Accelerometer(props) {
       color: '#C54242'
     },
     strokeWidth: 3
-  }))));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: foregroundStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataContainer
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: numberStyle
+  }, (Math.abs(props.X / 9.81) + Math.abs(props.Y / 9.81) + Math.abs(props.Z / 9.81)).toFixed(2), "g")))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Accelerometer);

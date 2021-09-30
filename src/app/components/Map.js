@@ -17,21 +17,21 @@ const dataTopRowStyle = {
     textAlign: 'left',
     margin: '18px 0px 0px 30px',
     fontFamily: 'Roboto'
-}
+};
 const dataRowStyle = { 
     height: '25%',
     textAlign: 'left',
     margin: '-2px 0px 0px 30px',
     fontFamily: 'Roboto'
-}
+};
 const dataValueStyle = {
     color: '#C54242',
     fontSize: '24px'
-}
+};
 const dataKeyStyle = {
     color: 'grey',
     fontSize: '12px'
-}
+};
 
 function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
     let w = maxX - minX

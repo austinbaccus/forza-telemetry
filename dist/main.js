@@ -495,8 +495,8 @@ var window;
 
 var createWindow = function createWindow() {
   window = new electron__WEBPACK_IMPORTED_MODULE_0__.BrowserWindow({
-    width: 1600,
-    height: 1000,
+    width: 1920,
+    height: 1080,
     backgroundColor: '#121212',
     // this is overwritten by the property in index.html
     autoHideMenuBar: true,
