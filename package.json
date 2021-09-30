@@ -2,11 +2,12 @@
   "name": "forza-telemetry",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
     "build:react": "webpack --mode development --config webpack.react.config.js",
     "build": "webpack --mode development",
-    "start": "electron ./dist/main.js"
+    "start": "electron ./dist/main.js",
+    "package-win": "electron-packager . forza-telemetry --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ForzaTelemetry\""
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "babel-loader": "^8.2.2",
     "electron": "^13.1.7",
     "electron-cgi": "^1.0.6",
+    "electron-packager": "^15.4.0",
     "html-webpack-plugin": "^5.3.2",
     "prettier": "^2.3.2",
     "tslint": "^6.1.3",
