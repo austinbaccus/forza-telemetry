@@ -5063,7 +5063,13 @@ var Dashboard = function Dashboard() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Map__WEBPACK_IMPORTED_MODULE_6__.default, {
     Coords: lapCoords,
     PrevLapCoords: prevLapCoords,
-    LapNumber: lapNumber
+    LapNumber: lapNumber,
+    Position: data ? data.RacePosition : 0,
+    Distance: data ? data.Distance : 0,
+    Remaining: data ? data.NormalDrivingLine : 0,
+    X: data ? data.PositionX.toFixed(0) : 0,
+    Y: data ? data.PositionY.toFixed(0) : 0,
+    Z: data ? data.PositionZ.toFixed(0) : 0
   }))));
 };
 
@@ -5363,6 +5369,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var sideColumnStyle = {
+  "float": 'left',
+  width: '25%',
+  height: '100%',
+  color: 'white'
+};
+var centerColumnStyle = {
+  "float": 'left',
+  width: '75%',
+  height: '100%'
+};
+var dataTopRowStyle = {
+  height: '25%',
+  textAlign: 'left',
+  margin: '18px 0px 0px 30px',
+  fontFamily: 'Roboto'
+};
+var dataRowStyle = {
+  height: '25%',
+  textAlign: 'left',
+  margin: '-2px 0px 0px 30px',
+  fontFamily: 'Roboto'
+};
+var dataValueStyle = {
+  color: '#C54242',
+  fontSize: '24px'
+};
+var dataKeyStyle = {
+  color: 'grey',
+  fontSize: '12px'
+};
 
 function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
   var w = maxX - minX;
@@ -5451,7 +5488,39 @@ function Map(props) {
   var boxOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()([[minX, minZ], [minX, maxZ], [maxX, maxZ], [maxX, minZ], [minX, minZ]]);
   var prevLapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.PrevLapCoords);
   var lapOutline = d3__WEBPACK_IMPORTED_MODULE_1__.line()(props.Coords);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: {
+      height: '100%'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: sideColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataTopRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, props.Position), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "POSITION")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, props.Distance), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "DISTANCE")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, props.Remaining), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "REMAINING")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataRowStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataValueStyle
+  }, props.X + ',' + props.Y + ',' + props.Z), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: dataKeyStyle
+  }, "COORDS"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: centerColumnStyle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     viewBox: "".concat(mapOffset[0], " ").concat(mapOffset[1], " ").concat(mapDimensions[0], " ").concat(mapDimensions[1]),
     style: {
       backgroundColor: 'transparent'
@@ -5466,7 +5535,12 @@ function Map(props) {
     stroke: "white",
     fill: "transparent",
     strokeWidth: "10"
-  })));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: boxOutline,
+    stroke: "grey",
+    fill: "transparent",
+    strokeWidth: "6"
+  }))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Map);

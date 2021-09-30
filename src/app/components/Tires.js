@@ -74,6 +74,7 @@ function LeftTire(props) {
         
     );
 }
+
 function RightTire(props) {
     let t = props.Temp;
     let color = getQuadColorInterpolation(t, '#3ABDBD', '#171717', 'orange', '#C54242', 135, 155, 275, 300, 300, 340)
@@ -85,6 +86,7 @@ function RightTire(props) {
         </div>
     );
 }
+
 function Tires(props) {
     return (
         <div style={{height: '100%'}}>

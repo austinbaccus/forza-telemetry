@@ -1,6 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import * as d3 from 'd3'
 
+const sideColumnStyle = {
+    float: 'left',
+    width: '25%',
+    height: '100%',
+    color: 'white'
+};
+const centerColumnStyle = {
+    float: 'left',
+    width: '75%',
+    height: '100%',
+};
+const dataTopRowStyle = { 
+    height: '25%',
+    textAlign: 'left',
+    margin: '18px 0px 0px 30px',
+    fontFamily: 'Roboto'
+}
+const dataRowStyle = { 
+    height: '25%',
+    textAlign: 'left',
+    margin: '-2px 0px 0px 30px',
+    fontFamily: 'Roboto'
+}
+const dataValueStyle = {
+    color: '#C54242',
+    fontSize: '24px'
+}
+const dataKeyStyle = {
+    color: 'grey',
+    fontSize: '12px'
+}
+
 function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
     let w = maxX - minX
     let h = maxZ - minZ
@@ -72,12 +104,32 @@ function Map(props) {
     let lapOutline = d3.line()(props.Coords)
 
     return (
-        <div>
-            <svg viewBox={`${mapOffset[0]} ${mapOffset[1]} ${mapDimensions[0]} ${mapDimensions[1]}`} style={{backgroundColor: 'transparent'}}>
-                <path d={prevLapOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
-                <path d={lapOutline} stroke="white" fill='transparent' strokeWidth='10'/>
-                {/* <path d={boxOutline} stroke="grey" fill='transparent' strokeWidth='6'/> */}
-            </svg>
+        <div style={{height: '100%'}}>
+            <div style={sideColumnStyle}>
+                <div style={dataTopRowStyle}>
+                    <div style={dataValueStyle}>{props.Position}</div>
+                    <div style={dataKeyStyle}>POSITION</div>
+                </div>
+                <div style={dataRowStyle}>
+                    <div style={dataValueStyle}>{props.Distance}m</div>
+                    <div style={dataKeyStyle}>DISTANCE</div>
+                </div>
+                <div style={dataRowStyle}>
+                    <div style={dataValueStyle}>{props.Remaining}</div>
+                    <div style={dataKeyStyle}>DRIVING LINE</div>
+                </div>
+                <div style={dataRowStyle}>
+                    <div style={dataValueStyle}>{props.X+','+props.Y+','+props.Z}</div>
+                    <div style={dataKeyStyle}>COORDS</div>
+                </div>
+            </div>
+            <div style={centerColumnStyle}>
+                <svg viewBox={`${mapOffset[0]} ${mapOffset[1]} ${mapDimensions[0]} ${mapDimensions[1]}`} style={{backgroundColor: 'transparent'}}>
+                    <path d={prevLapOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
+                    <path d={lapOutline} stroke="white" fill='transparent' strokeWidth='10'/>
+                    <path d={boxOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
+                </svg>
+            </div>
         </div>
     );
 }
