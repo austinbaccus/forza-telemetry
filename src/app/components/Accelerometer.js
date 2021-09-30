@@ -23,6 +23,18 @@ const foregroundStyle = {
     flex: 'none', 
     marginLeft: '-100%' 
 };
+const dataContainer = {
+    height: '100%',
+    width: '100%',
+    position: 'relative',
+}
+const numberStyle = {
+    position: 'absolute',
+    right: '-50px',
+    bottom: '0px',
+    color: '#C54242',
+    fontSize: '24px',
+}
 
 function GetAccelerometerPosition(x, z, radius) {
     let xSign = x >= 0 ? 1 : -1
@@ -61,6 +73,12 @@ function Accelerometer(props) {
                 </div>
                 <div style={foregroundStyle}>
                     <Polyline points={GetRedLinePosition(props.X, props.Z, radius)} fill={{color:'transparent'}} stroke={{color:'#C54242'}} strokeWidth={3} />
+                </div>
+                <div style={foregroundStyle}>
+                    <div style={dataContainer}>
+                        <div style={numberStyle}>
+                            {(Math.abs(props.X/9.81) + Math.abs(props.Y/9.81) + Math.abs(props.Z/9.81)).toFixed(2)}g</div>
+                        </div>
                 </div>
             </div>
         </div>

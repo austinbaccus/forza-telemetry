@@ -2,15 +2,15 @@ const url = require("url")
 const path = require("path")
 const { ConnectionBuilder } = require("electron-cgi")
 
-import { app, BrowserWindow, screen, ipcMain } from "electron"
+import { app, BrowserWindow, ipcMain } from "electron"
 
 
 let window: BrowserWindow | null;
 
 const createWindow = () => {
   window = new BrowserWindow({
-    width: 1600, 
-    height: 1000,
+    width: 1920, 
+    height: 1080,
     backgroundColor: '#121212', // this is overwritten by the property in index.html
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
