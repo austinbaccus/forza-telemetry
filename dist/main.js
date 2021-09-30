@@ -498,7 +498,7 @@ var createWindow = function createWindow() {
     width: 1600,
     height: 1000,
     backgroundColor: '#121212',
-    //'#0A0A0A',
+    // this is overwritten by the property in index.html
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
     webPreferences: {

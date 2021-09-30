@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createTheme } from '@material-ui/core/styles';
 import { ipcRenderer } from "electron";
-import { Button } from 'react-bootstrap';
 import CSS from 'csstype';
+import Button from 'react-bootstrap/Button';
+import { MDBBtn,
+    MDBModal,
+    MDBModalDialog, 
+    MDBModalContent,
+    MDBModalBody,
+    MDBModalFooter,
+  } from 'mdb-react-ui-kit';
 
 import Accelerometer from './Accelerometer';
 import Laps from "./Laps";
@@ -211,7 +218,11 @@ export const Dashboard = () => {
     const [mpg, setMpg] = useState('0')
     const [previousCoords, setPreviousCoords] = useState([0,0,0])
     const [previousFuel, setPreviousFuel] = useState(1)
+    const [fullscreenModal, setFullscreenModal] = useState(false);
+    const [settingsModal, setSettingsModal] = useState(false);
 
+    const toggleFullscreenModalShow = () => setFullscreenModal(!fullscreenModal);
+    const toggleSettingsModalShow = () => setSettingsModal(!settingsModal);
     const setPrevFuel = (fuel:number) => { setPreviousFuel(fuel) }
 
     React.useEffect(() => {
@@ -319,7 +330,7 @@ export const Dashboard = () => {
                             <tr>
                                 <td style={{}}>
                                     <div style={dataValueStyle}>
-                                        <Button onClick={() => {  
+                                        <Button variant="outline-danger" onClick={() => {  
                                             ipcRenderer.send('switch-recording-mode', ''); 
                                             setRecordingState(recordingState === 'Record' ? 'Stop Recording' : 'Record');
                                         }}>
@@ -329,23 +340,58 @@ export const Dashboard = () => {
                                 </td>
                                 <td style={{}}>
                                     <div style={dataValueStyle}>
-                                        <Button onClick={() => { console.log('clicked!') }}>
+                                        <Button variant="outline-danger" onClick={() => { 
+                                            setLapCoords([])
+                                            setPrevLapCoords([])
+                                            setLapNumber(-1)
+                                            setLapData([])
+                                            setFuelPerLap('N/A')
+                                            setMpg('0')
+                                            setPreviousCoords([0,0,0])
+                                            setPreviousFuel(1);
+                                        }}>
                                             Reset
                                         </Button>
                                     </div>
                                 </td>
                                 <td style={{}}>
                                     <div style={dataValueStyle}>
-                                        <Button onClick={() => { console.log('clicked!') }}>
+                                        <Button variant="outline-danger" onClick={toggleFullscreenModalShow}>
                                             Fullscreen
                                         </Button>
+                                        <MDBModal show={fullscreenModal} getOpenState={(e: any) => setFullscreenModal(e)} tabIndex='-1'>
+                                            <MDBModalDialog>
+                                                <MDBModalContent>
+                                                    <MDBModalBody>
+                                                        I'm too lazy to write the code for this. Just press F11 and that'll do the trick.
+                                                    </MDBModalBody>
+
+                                                    <MDBModalFooter>
+                                                        <Button variant="danger" onClick={toggleFullscreenModalShow}>Close</Button>
+                                                    </MDBModalFooter>
+                                                </MDBModalContent>
+                                            </MDBModalDialog>
+                                        </MDBModal>
                                     </div>
                                 </td>
                                 <td style={{}}>
                                     <div style={dataValueStyle}>
-                                        <Button onClick={() => { console.log('clicked!') }}>
+                                        <Button variant="outline-danger" onClick={toggleSettingsModalShow}>
                                             Settings
                                         </Button>
+                                        <MDBModal show={settingsModal} getOpenState={(e: any) => setSettingsModal(e)} tabIndex='-1'>
+                                            <MDBModalDialog>
+                                                <MDBModalContent>
+                                                    <MDBModalBody>
+                                                        <Button variant="outline-danger">Light Mode</Button>
+                                                    </MDBModalBody>
+
+                                                    <MDBModalFooter>
+                                                        <Button variant="danger" onClick={toggleSettingsModalShow}>Close</Button>
+                                                    </MDBModalFooter>
+                                                </MDBModalContent>
+                                            </MDBModalDialog>
+                                        </MDBModal>
                                     </div>
                                 </td>
                             </tr>

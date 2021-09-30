@@ -111,8 +111,8 @@ function Map(props) {
                     <div style={dataKeyStyle}>POSITION</div>
                 </div>
                 <div style={dataRowStyle}>
-                    <div style={dataValueStyle}>{props.Distance}m</div>
-                    <div style={dataKeyStyle}>DISTANCE</div>
+                    <div style={dataValueStyle}>{props.Distance}</div>
+                    <div style={dataKeyStyle}>DISTANCE (m)</div>
                 </div>
                 <div style={dataRowStyle}>
                     <div style={dataValueStyle}>{props.Remaining}</div>
