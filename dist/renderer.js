@@ -8610,6 +8610,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
+/* harmony import */ var react_shapes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-shapes */ "./node_modules/react-shapes/lib/Shapes.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -8621,6 +8622,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -8718,6 +8720,11 @@ function Map(props) {
       mapOffset = _useState12[0],
       setMapOffset = _useState12[1];
 
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+      _useState14 = _slicedToArray(_useState13, 2),
+      smush = _useState14[0],
+      setSmush = _useState14[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (props.Coords[0]) {
       if (props.Coords.length < 2) {
@@ -8734,6 +8741,8 @@ function Map(props) {
       setMaxZ(newBounds[3]);
       setMapDimensions(CalculateMapDimensions(minX, maxX, minZ, maxZ));
       setMapOffset(CalculateMapOffset(minX, minZ));
+      var widthToHeightRatio = (maxX - minX) / (maxZ - minZ);
+      setSmush(widthToHeightRatio > 1 ? Math.min(168, widthToHeightRatio * 20) : 0);
     }
   }, [props]); // this doesn't work (it's supposed to place the prev lap path on the map every time a new lap is started)
 
@@ -8775,26 +8784,25 @@ function Map(props) {
     style: dataKeyStyle
   }, "COORDS"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     style: centerColumnStyle
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_shapes__WEBPACK_IMPORTED_MODULE_2__.Polyline, {
+    points: "0,0 0,".concat(smush),
+    fill: {
+      color: '#34495e'
+    },
+    stroke: {
+      color: 'transparent'
+    },
+    strokeWidth: 5
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
     viewBox: "".concat(mapOffset[0], " ").concat(mapOffset[1], " ").concat(mapDimensions[0], " ").concat(mapDimensions[1]),
     style: {
       backgroundColor: 'transparent'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: prevLapOutline,
-    stroke: "grey",
-    fill: "transparent",
-    strokeWidth: "6"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
     d: lapOutline,
     stroke: "white",
     fill: "transparent",
     strokeWidth: "10"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: boxOutline,
-    stroke: "grey",
-    fill: "transparent",
-    strokeWidth: "6"
   }))));
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import * as d3 from 'd3'
+import { Polyline } from 'react-shapes'
 
 const sideColumnStyle = {
     float: 'left',
@@ -75,6 +76,7 @@ function Map(props) {
     const [maxZ, setMaxZ] = useState(0)
     const [mapDimensions, setMapDimensions] = useState([13.44,10.00])
     const [mapOffset, setMapOffset] = useState([-1,-1])
+    const [smush, setSmush] = useState(0)
     
     useEffect(() => {
         if (props.Coords[0]) {
@@ -91,6 +93,9 @@ function Map(props) {
             setMaxZ(newBounds[3])
             setMapDimensions(CalculateMapDimensions(minX, maxX, minZ, maxZ))
             setMapOffset(CalculateMapOffset(minX, minZ))
+
+            let widthToHeightRatio = (maxX-minX) / (maxZ-minZ)
+            setSmush(widthToHeightRatio > 1 ? Math.min(168,widthToHeightRatio*20) : 0)
         }
     }, [props])
 
@@ -124,10 +129,13 @@ function Map(props) {
                 </div>
             </div>
             <div style={centerColumnStyle}>
+                {/* This line is only here to "smush" the map down so that it's in the center of the box thingy */}
+                <Polyline points={`0,0 0,${smush}`} fill={{color:'#34495e'}} stroke={{color:'transparent'}} strokeWidth={5} />
+
                 <svg viewBox={`${mapOffset[0]} ${mapOffset[1]} ${mapDimensions[0]} ${mapDimensions[1]}`} style={{backgroundColor: 'transparent'}}>
-                    <path d={prevLapOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
+                    {/* <path d={prevLapOutline} stroke="grey" fill='transparent' strokeWidth='6'/> */}
                     <path d={lapOutline} stroke="white" fill='transparent' strokeWidth='10'/>
-                    <path d={boxOutline} stroke="grey" fill='transparent' strokeWidth='6'/>
+                    {/* <path d={boxOutline} stroke="grey" fill='transparent' strokeWidth='6'/> */}
                 </svg>
             </div>
         </div>
