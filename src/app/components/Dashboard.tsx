@@ -425,7 +425,17 @@ export const Dashboard = () => {
                     />
                 </div>
                 <div style={basicTelemetryContainerStyle}>
-                    <Map Coords={lapCoords} PrevLapCoords={prevLapCoords} LapNumber={lapNumber}/>
+                    <Map 
+                        Coords={lapCoords} 
+                        PrevLapCoords={prevLapCoords} 
+                        LapNumber={lapNumber}
+                        Position={data ? data.RacePosition : 0}
+                        Distance={data ? data.Distance.toFixed(0) : 0}
+                        Remaining={data ? data.NormalDrivingLine : 0}
+                        X={data ? data.PositionX.toFixed(0) : 0}
+                        Y={data ? data.PositionY.toFixed(0) : 0}
+                        Z={data ? data.PositionZ.toFixed(0) : 0}
+                    />
                 </div>
             </div>
         </ThemeProvider>
