@@ -4,17 +4,45 @@ Record and Display Telemetry from Forza Motorsport 7, Horizon 4, and Horizon 5.
 <img src="https://user-images.githubusercontent.com/10345834/135935950-c2771543-0c8d-45d6-a127-8220ab46b2ec.gif" width=650 align=center>
 
 ## Quick Start
-1. Download the zip file in the `release-builds` folder
+### Configuration
+#### Installing .NET 6.0
+1. Visit [Microsoft's .NET 6.0 download page](https://dotnet.microsoft.com/download/dotnet/6.0)
+2. Download the x86 version of the installer for Windows
 
-2. Unzip the file and launch the executable
+#### Configuring Forza's UDP settings
+##### Motorsport 7
+1. Launch the game and head to the HUD options menu
+2. Set `Data Out` to `ON`
+3. Set `Data Out IP Address` to `127.0.0.1` (localhost)
+4. Set `Data Out IP Port` to `5300`
+5. Set `Data Out Packet Format` to `CAR DASH`
+##### Horizon 4
+1. Launch the game and proceed through the menus until you can drive your car
+2. Pause the game and navigate to the Settings menu
+3. Navigate to HUD and Gameplay
+4. Set `Data Out` to `ON`
+5. Set `Data Out IP Address` to `127.0.0.1` (localhost)
+6. Set `Data Out IP Port` to `5300`
+
+#### Enable UDP Loopback for Forza
+1. Install [Window 8 AppContainer Loopback Utility](https://telerik-fiddler.s3.amazonaws.com/fiddler/addons/enableloopbackutility.exe)
+2. Start the utility (if it shows a message about orphan sid, you can safely ignore it)
+3. Make sure that Forza Horizon 4 / Motorsport 7 are checked
+4. Save changes
+
+More information on how to enable this and why it's necessary can be found [here](https://github.com/SHWotever/SimHub/wiki/SimHub-Basics----Games-config-and-troubleshooting#forza-horizon-4--motorsport-7)
+
+### Running the App
+1. Clone this repository: `git clone https://github.com/austinbaccus/forza-telemetry.git`
+2. Open a terminal and navigate to the folder containing the `src` folder
+3. Run: `npm run build:react | npm run build | npm run start`
 
 OR
 
-3. Clone this repository: `git clone https://github.com/austinbaccus/forza-telemetry.git`
+1. Download the latest release version
+2. Unzip the folder
+3. Run the executable
 
-2. Open a terminal and navigate to the folder containing the `src` folder
-
-3. Run: `npm run build:react | npm run build | npm run start`
 ## Features
 ### Record Telemetry
 - This app allows users to save all telemetry to a CSV file for later analysis
