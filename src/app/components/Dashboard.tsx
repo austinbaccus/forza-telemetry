@@ -231,10 +231,13 @@ export const Dashboard = () => {
 
             dataCount = dataCount + 1
             // update map
-            if (dataCount % 5 == 0) {
+            if (dataCount % 10 == 0) {
                 let c = lapCoords
                 c.push([message.PositionX, -message.PositionZ])
                 setLapCoords(c)
+                if (c.length > 100) {
+                    c.shift()
+                }
             }
             // update MPG
             if (dataCount % 50 == 0) {
