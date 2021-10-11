@@ -4,7 +4,7 @@ import { createTheme } from '@material-ui/core/styles';
 import { ipcRenderer } from "electron";
 import CSS from 'csstype';
 import Button from 'react-bootstrap/Button';
-import { MDBBtn,
+import {
     MDBModal,
     MDBModalDialog, 
     MDBModalContent,
@@ -73,12 +73,6 @@ const mainHudBottomStyle: CSS.Properties = {
     height: '10%',
     borderRadius: '5px',
     marginTop: '60px',
-}
-const dataRowStyle = { 
-    height: '25%',
-    textAlign: 'left',
-    margin: '-2px 0px 0px 30px',
-    fontFamily: 'Roboto'
 }
 const dataValueStyle = {
     color: '#C54242',
@@ -231,11 +225,17 @@ export const Dashboard = () => {
 
             dataCount = dataCount + 1
             // update map
+            // only update the map every 10 ticks to avoid running into performance issues
             if (dataCount % 10 == 0) {
                 let c = lapCoords
                 c.push([message.PositionX, -message.PositionZ])
                 setLapCoords(c)
-                if (c.length > 100) {
+                // If the map path is more than 6500 segments long, then start deleting the oldest segment every time you add a new segment.
+                // This prevents the app from running into performance issues because of the map path becoming too long.
+                // 6500 is a guesstimated value. It was chosen after testing the number of segments required for 
+                // one of FM7's slowest cars, the Toyota Arctic Truck, to draw a complete path around the Nurburgring Nordschleife + GP circuit.
+                // The number required is roughly 6500 segments.
+                if (c.length > 6500) {
                     c.shift()
                 }
             }
@@ -248,6 +248,9 @@ export const Dashboard = () => {
                 let x2 = previousCoords[0]
                 let y2 = previousCoords[1]
                 let z2 = previousCoords[2]
+                // do not use the game's calculation of distance travelled. if you do, the player
+                // can simply go backwardss during a race and the games' distance travelled number will actually decrease
+                // this would, of course, throw off the MPG calculation
                 let distance = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2) + Math.pow(z2-z1, 2))
                 
                 previousCoords[0] = message.PositionX
@@ -261,7 +264,7 @@ export const Dashboard = () => {
                 let fuelUsed = previousFuel - message.Fuel
 
                 // convert to gallons
-                fuelUsed = fuelUsed * 13 // 13 gallons is the typical sized fuel tank for a car
+                fuelUsed = fuelUsed * 13 // 13 gallons is the typical sized fuel tank for a car. Forza doesn't tell you how many gallons their cars have.
 
                 setMpg((distance/fuelUsed).toFixed(0))
             }
@@ -351,7 +354,8 @@ export const Dashboard = () => {
                                             setFuelPerLap('N/A')
                                             setMpg('0')
                                             setPreviousCoords([0,0,0])
-                                            setPreviousFuel(1);
+                                            setPreviousFuel(1)
+                                            lapCoords.length = 0
                                         }}>
                                             Reset
                                         </Button>
@@ -484,6 +488,7 @@ export const Dashboard = () => {
                         X={data ? data.PositionX.toFixed(0) : 0}
                         Y={data ? data.PositionY.toFixed(0) : 0}
                         Z={data ? data.PositionZ.toFixed(0) : 0}
+                        RaceTime={data ? data.CurrentRaceTime : 0}
                     />
                 </div>
             </div>

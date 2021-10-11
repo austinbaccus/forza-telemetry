@@ -97,6 +97,17 @@ function Map(props) {
             let widthToHeightRatio = (maxX-minX) / (maxZ-minZ)
             setSmush(widthToHeightRatio > 1 ? Math.min(168,widthToHeightRatio*20) : 0)
         }
+        // Reset the map boundaries and variables if a new race has just started
+        // If the race time is 0  we can assume the user has just started a new race
+        if (props.RaceTime === 0) {
+            setMinX(0)
+            setMaxX(0)
+            setMinZ(0)
+            setMaxZ(0)
+            setMapDimensions([13.44,10.00])
+            setMapOffset([-1,-1])
+            setSmush(0)
+        }
     }, [props])
 
     // this doesn't work (it's supposed to place the prev lap path on the map every time a new lap is started)
