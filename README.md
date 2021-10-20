@@ -1,9 +1,32 @@
-# Forza Telemetry
-Record and Display Telemetry from Forza Motorsport 7, Horizon 4, and Horizon 5.
+<h3 align=center>Forza Telemetry</h3>
+
+<div align=center>
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/austinbaccus/forza-telemetry.svg)](https://github.com/eastonco/YikYak/Issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/austinbaccus/forza-telemetry.svg)](https://github.com/eastonco/YikYak/pulls)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+
+
+
+</div>
+
+---
+<p align=center>Record and Display Telemetry from Forza Motorsport 7, Horizon 4, and Horizon 5.
+    <br/>
+</p>
 
 <img src="https://user-images.githubusercontent.com/10345834/135935950-c2771543-0c8d-45d6-a127-8220ab46b2ec.gif" width=650 align=center>
 
-## Quick Start
+
+## 📝 Table of Contents
+
+- [Quick Start](#quick_start)
+- [Features](#features)
+- [Built Using](#built_using)
+- [FAQ](#faq)
+
+## 🏁 Quick Start <a name="quick_start"></a>
 ### Configuration
 #### Installing .NET 6.0
 1. Visit [Microsoft's .NET 6.0 download page](https://dotnet.microsoft.com/download/dotnet/6.0)
@@ -35,7 +58,8 @@ More information on how to enable this and why it's necessary can be found [here
 ### Running the App
 1. Clone this repository: `git clone https://github.com/austinbaccus/forza-telemetry.git`
 2. Open a terminal and navigate to the folder containing the `src` folder
-3. Run: `npm run build:react | npm run build | npm run start`
+3. Install dependencies with `npm install`
+4. Run: `npm run build:react | npm run build | npm run start`
 
 OR
 
@@ -43,7 +67,7 @@ OR
 2. Unzip the folder
 3. Run the executable
 
-## Features
+## 🚀 Features <a name="features"></a>
 ### Record Telemetry
 - This app allows users to save all telemetry to a CSV file for later analysis
 - All incoming telemetry data is saved (along with the timestamp)
@@ -63,7 +87,14 @@ This gif was created by using the Recording feature and Python to make a 3D trac
 ### Runs on your Local Machine
 - Forza Telemetry uses a UDP loopback so that you can run this program on the same computer that you're using to play Forza
 
-## FAQ
+## ⚒️ Built Using <a name="built_using"></a>
+- [React](https://reactjs.org/)
+- [Webpack](https://webpack.js.org/)
+- [Electron](https://electronjs.org/)
+- [Babbel](https://babeljs.io/)
+- [Material-UI](https://material-ui.com/)
+- [Bootstrap](https://getbootstrap.com/)
+## ❓ FAQ <a name="faq"></a>
 ### Why does the MPG value look off?
 Because Forza calculates fuel consumption in a very strange way. Also, Forza cars have an unknown amount of fuel, so calculating the Miles Per Gallon figure is a bit tricky. The app assumes that each car has roughly 13 gallons of fuel to arrive at a number for MPG (13 gallons of fuel is a typical amount for a road car).
 ### Why is the app running slowly?
