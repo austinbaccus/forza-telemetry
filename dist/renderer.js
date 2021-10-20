@@ -8681,7 +8681,7 @@ function CalculateMapDimensions(minX, maxX, minZ, maxZ) {
 
   w = w * 1.1;
   h = h * 1.1;
-  return [w, h]; // return [1344,1000]
+  return [w, h];
 }
 
 function CalculateMapOffset(minX, minZ) {
