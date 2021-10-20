@@ -1,4 +1,4 @@
-<h2 align=center>Forza Telemetry</h3>
+<h3 align=center>Forza Telemetry</h3>
 
 <div align=center>
 
