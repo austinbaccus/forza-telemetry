@@ -26,7 +26,7 @@
 - [Built Using](#built_using)
 - [FAQ](#faq)
 
-## Quick Start <a name="quick_start"></a>
+## 🏁 Quick Start <a name="quick_start"></a>
 ### Configuration
 #### Installing .NET 6.0
 1. Visit [Microsoft's .NET 6.0 download page](https://dotnet.microsoft.com/download/dotnet/6.0)
@@ -67,7 +67,7 @@ OR
 2. Unzip the folder
 3. Run the executable
 
-## Features <a name="features"></a>
+## 🚀 Features <a name="features"></a>
 ### Record Telemetry
 - This app allows users to save all telemetry to a CSV file for later analysis
 - All incoming telemetry data is saved (along with the timestamp)
@@ -87,14 +87,14 @@ This gif was created by using the Recording feature and Python to make a 3D trac
 ### Runs on your Local Machine
 - Forza Telemetry uses a UDP loopback so that you can run this program on the same computer that you're using to play Forza
 
-## Built Using <a name="built_using"></a>
+## ⚒️ Built Using <a name="built_using"></a>
 - [React](https://reactjs.org/)
 - [Webpack](https://webpack.js.org/)
 - [Electron](https://electronjs.org/)
 - [Babbel](https://babeljs.io/)
 - [Material-UI](https://material-ui.com/)
 - [Bootstrap](https://getbootstrap.com/)
-## FAQ <a name="faq"></a>
+## ❓ FAQ <a name="faq"></a>
 ### Why does the MPG value look off?
 Because Forza calculates fuel consumption in a very strange way. Also, Forza cars have an unknown amount of fuel, so calculating the Miles Per Gallon figure is a bit tricky. The app assumes that each car has roughly 13 gallons of fuel to arrive at a number for MPG (13 gallons of fuel is a typical amount for a road car).
 ### Why is the app running slowly?
