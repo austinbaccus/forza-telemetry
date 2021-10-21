@@ -1,56 +1,69 @@
 {
-  "name": "forza-telemetry",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/main.js",
-  "scripts": {
-    "build:react": "webpack --mode development --config webpack.react.config.js",
-    "build": "webpack --mode development",
-    "start": "electron ./dist/main.js",
-    "package-win": "electron-packager . forza-telemetry --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ForzaTelemetry\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/austinbaccus/forza-telemetry.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/austinbaccus/forza-telemetry/issues"
-  },
-  "homepage": "https://github.com/austinbaccus/forza-telemetry#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.14.8",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-transform-arrow-functions": "^7.14.5",
-    "@babel/preset-env": "^7.14.8",
-    "@babel/preset-react": "^7.14.5",
-    "@babel/preset-typescript": "^7.14.5",
-    "@types/react": "^17.0.15",
-    "@types/react-dom": "^17.0.9",
-    "babel-loader": "^8.2.2",
-    "electron": "^13.1.7",
-    "electron-cgi": "^1.0.6",
-    "electron-packager": "^15.4.0",
-    "html-webpack-plugin": "^5.3.2",
-    "prettier": "^2.3.2",
-    "tslint": "^6.1.3",
-    "typescript": "^4.3.5",
-    "webpack": "^5.46.0",
-    "webpack-cli": "^4.7.2"
-  },
-  "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/data-grid": "^4.0.0-alpha.37",
-    "bootstrap": "^5.1.1",
-    "custom-electron-titlebar": "^3.2.7",
-    "d3": "^7.0.1",
-    "mdb-react-ui-kit": "^1.4.0",
-    "react": "^17.0.2",
-    "react-bootstrap": "^2.0.0-rc.0",
-    "react-dom": "^17.0.2",
-    "react-shapes": "^0.1.0"
-  }
+    "name": "forza-telemetry",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/main.js",
+    "scripts": {
+        "build:react": "webpack --mode development --config webpack.react.config.js",
+        "build": "webpack --mode development",
+        "start": "electron ./dist/main.js",
+        "package-win": "electron-packager . forza-telemetry --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ForzaTelemetry\"",
+        "prepare": "husky install",
+        "check-types": "tsc --pretty --noEmit",
+        "check-format": "prettier --check .",
+        "check-lint": "eslint . --ext ts --ext tsx --ext js",
+        "format": "prettier --write .",
+        "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/austinbaccus/forza-telemetry.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/austinbaccus/forza-telemetry/issues"
+    },
+    "homepage": "https://github.com/austinbaccus/forza-telemetry#readme",
+    "devDependencies": {
+        "@babel/cli": "^7.14.8",
+        "@babel/core": "^7.14.8",
+        "@babel/plugin-proposal-class-properties": "^7.14.5",
+        "@babel/plugin-transform-arrow-functions": "^7.14.5",
+        "@babel/preset-env": "^7.14.8",
+        "@babel/preset-react": "^7.14.5",
+        "@babel/preset-typescript": "^7.14.5",
+        "@types/react": "^17.0.15",
+        "@types/react-dom": "^17.0.9",
+        "@typescript-eslint/eslint-plugin": "^5.1.0",
+        "@typescript-eslint/parser": "^5.1.0",
+        "babel-loader": "^8.2.2",
+        "electron": "^13.1.7",
+        "electron-cgi": "^1.0.6",
+        "electron-packager": "^15.4.0",
+        "eslint": "^7.32.0",
+        "eslint-config-google": "^0.14.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-react": "^7.26.1",
+        "html-webpack-plugin": "^5.3.2",
+        "prettier": "^2.4.1",
+        "tslint": "^6.1.3",
+        "typescript": "^4.3.5",
+        "webpack": "^5.46.0",
+        "webpack-cli": "^4.7.2",
+        "husky": "^7.0.0"
+    },
+    "dependencies": {
+        "@material-ui/core": "^4.12.3",
+        "@material-ui/data-grid": "^4.0.0-alpha.37",
+        "bootstrap": "^5.1.1",
+        "custom-electron-titlebar": "^3.2.7",
+        "d3": "^7.0.1",
+        "mdb-react-ui-kit": "^1.4.0",
+        "react": "^17.0.2",
+        "react-bootstrap": "^2.0.0-rc.0",
+        "react-dom": "^17.0.2",
+        "react-shapes": "^0.1.0"
+    }
 }

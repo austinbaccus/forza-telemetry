@@ -1,21 +1,21 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement } from 'react'
 
 type GeneralProps = {
-    PositionX: number, 
-    PositionY: number, 
-    PositionZ: number,
-    Steer: number,
-    Gear: number,
-    Fuel: number,
-    Distance: number,
-    EngineMaxRpm: number,
-    EngineIdleRpm: number,
+    PositionX: number
+    PositionY: number
+    PositionZ: number
+    Steer: number
+    Gear: number
+    Fuel: number
+    Distance: number
+    EngineMaxRpm: number
+    EngineIdleRpm: number
     CurrentEngineRpm: number
-  }
+}
 
 const General: FC<GeneralProps> = ({
-    PositionX, 
-    PositionY, 
+    PositionX,
+    PositionY,
     PositionZ,
     Steer,
     Gear,
@@ -23,9 +23,8 @@ const General: FC<GeneralProps> = ({
     Distance,
     EngineMaxRpm,
     EngineIdleRpm,
-    CurrentEngineRpm
-}): 
-    ReactElement => {
+    CurrentEngineRpm,
+}): ReactElement => {
     return (
         <div>
             <p>X: {PositionX}</p>
@@ -39,7 +38,7 @@ const General: FC<GeneralProps> = ({
             <p>EngineIdleRpm: {EngineIdleRpm}</p>
             <p>CurrentEngineRpm: {CurrentEngineRpm}</p>
         </div>
-    );
-};
+    )
+}
 
-export default General;
+export default General
