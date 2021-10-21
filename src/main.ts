@@ -18,6 +18,7 @@ const createWindow = () => {
       nodeIntegration: true, // these two preferences are critical
       contextIsolation: false // to getting data from main to dashboard
     },
+    icon: path.join('../', __dirname, 'build/', 'icon.ico')
   });
 
   window.loadURL(

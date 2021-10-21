@@ -1,6 +1,6 @@
 {
   "name": "forza-telemetry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/main.js",
   "scripts": {
@@ -14,8 +14,8 @@
     "url": "git+https://github.com/austinbaccus/forza-telemetry.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Austin Baccus",
+  "license": "https://github.com/austinbaccus/forza-telemetry/blob/main/LICENSE",
   "bugs": {
     "url": "https://github.com/austinbaccus/forza-telemetry/issues"
   },
