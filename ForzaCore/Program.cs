@@ -14,7 +14,7 @@ namespace ForzaCore
 {
     class Program
     {
-        private const int recordRateMS = 100;
+        private const int recordRateMS = 50;
         private static bool recordingData = false;
         private static bool isRaceOn = false;
         private static DataPacket data = new DataPacket();
