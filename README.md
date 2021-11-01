@@ -31,7 +31,7 @@
 #### Installing .NET 6.0
 
 1. Visit [Microsoft's .NET 6.0 download page](https://dotnet.microsoft.com/download/dotnet/6.0)
-2. Download the x86 version of the installer for Windows
+2. Download the x64 version of the installer for Windows
 
 #### Configuring Forza's UDP settings
 
