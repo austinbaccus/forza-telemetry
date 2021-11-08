@@ -120,7 +120,7 @@ function Map(props) {
 
     // this doesn't work (it's supposed to place the prev lap path on the map every time a new lap is started)
     useEffect(() => {
-        //prevLapOutline = d3.line()(props.PrevLapCoords)
+        // prevLapOutline = d3.line()(props.PrevLapCoords)
     }, [props.PrevLapCoords])
 
     /* const boxOutline = d3.line()([

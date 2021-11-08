@@ -7,7 +7,6 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 let window: BrowserWindow | null
 
 const createWindow = () => {
-
     window = new BrowserWindow({
         width: 1920,
         height: 1080,
@@ -19,8 +18,7 @@ const createWindow = () => {
             contextIsolation: false, // to getting data from main to dashboard
         },
 
-    icon: path.join('../', __dirname, 'build/', 'icon.ico')
-
+        icon: path.join('../', __dirname, 'build/', 'icon.ico'),
     })
 
     window.loadURL(

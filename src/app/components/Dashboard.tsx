@@ -192,11 +192,10 @@ let dataCount = 0
 function secondsToTimeString(seconds: number) {
     const s = Math.floor(seconds % 60)
     const m = Math.floor(((seconds * 1000) / (1000 * 60)) % 60)
-    let strFormat = 'MM:SS' // "MM:SS:XXX"
+    let strFormat = 'MM:SS'
 
     strFormat = strFormat.replace(/MM/, m + '')
     strFormat = strFormat.replace(/SS/, s + '')
-    // strFormat = strFormat.replace(/XXX/, ms.slice(0,3)) //toString().slice(0,3));
 
     return strFormat
 }
