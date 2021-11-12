@@ -86,7 +86,7 @@ This gif was created by using the Recording feature and <a href="https://github.
 ### Map Trail
 
 -   Your car's path will be drawn in real-time as you drive around in either Motorsport or Horizon
-    <img src="https://user-images.githubusercontent.com/10345834/131269308-40c7ace2-069c-4a6e-8952-6631cc5274d5.gif" width=350 align=center>
+<img src="https://user-images.githubusercontent.com/10345834/131269308-40c7ace2-069c-4a6e-8952-6631cc5274d5.gif" width=350 align=center>
 
 ### Fuel Management
 
