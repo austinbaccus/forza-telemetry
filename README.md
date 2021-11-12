@@ -80,8 +80,8 @@ OR
 
 -   This app allows users to save all telemetry to a CSV file for later analysis
 -   All incoming telemetry data is saved (along with the timestamp)
-    <img src="https://user-images.githubusercontent.com/10345834/135935841-fd35ff94-461f-4e40-8305-688cf3795049.gif" width=350 align=center>
-    This gif was created by using the Recording feature and Python to make a 3D trace of the player's XYZ coordinates during a race
+<img src="https://user-images.githubusercontent.com/10345834/135935841-fd35ff94-461f-4e40-8305-688cf3795049.gif" width=350 align=center>
+This gif was created by using the Recording feature and <a href="https://github.com/austinbaccus/forza-map-visualization">Forza Map Visualization</a> to make a 3D trace of the player's XYZ coordinates during a race
 
 ### Map Trail
 
