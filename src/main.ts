@@ -16,6 +16,7 @@ const createWindow = () => {
         webPreferences: {
             nodeIntegration: true, // these two preferences are critical
             contextIsolation: false, // to getting data from main to dashboard
+            enableRemoteModule: true
         },
 
         icon: path.join('../', __dirname, 'build/', 'icon.ico'),

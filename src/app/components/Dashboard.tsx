@@ -18,7 +18,8 @@ import Tires from './Tires'
 import Steering from './Steering'
 import Map from './Map'
 import Tach from './Tach'
-
+var electron = require('electron');
+var window = electron.remote.getCurrentWindow();
 const darkTheme = createTheme({
     palette: {
         type: 'dark',
@@ -200,6 +201,15 @@ function secondsToTimeString(seconds: number) {
     return strFormat
 }
 
+function toggleFullscreen() {
+    if (!window.isFullScreen()) {
+        window.setFullScreen(true);
+     } else {
+        window.setFullScreen(false);
+     }
+    
+}
+
 export const Dashboard = () => {
     const [data, setData] = useState<Packet>()
     const [recordingState, setRecordingState] = useState('Record')
@@ -211,10 +221,7 @@ export const Dashboard = () => {
     const [mpg, setMpg] = useState('0')
     const [previousCoords, setPreviousCoords] = useState([0, 0, 0])
     const [previousFuel, setPreviousFuel] = useState(1)
-    const [fullscreenModal, setFullscreenModal] = useState(false)
     const [settingsModal, setSettingsModal] = useState(false)
-
-    const toggleFullscreenModalShow = () => setFullscreenModal(!fullscreenModal)
     const toggleSettingsModalShow = () => setSettingsModal(!settingsModal)
     // const setPrevFuel = (fuel: number) => setPreviousFuel(fuel);
 
@@ -397,39 +404,11 @@ export const Dashboard = () => {
                                     <div style={dataValueStyle}>
                                         <Button
                                             variant="outline-danger"
-                                            onClick={toggleFullscreenModalShow}
+                                            onClick={toggleFullscreen}
                                         >
                                             Fullscreen
                                         </Button>
-                                        <MDBModal
-                                            show={fullscreenModal}
-                                            getOpenState={(e: any) =>
-                                                setFullscreenModal(e)
-                                            }
-                                            tabIndex="-1"
-                                        >
-                                            <MDBModalDialog>
-                                                <MDBModalContent>
-                                                    <MDBModalBody>
-                                                        I'm too lazy to write
-                                                        the code for this. Just
-                                                        press F11 and that'll do
-                                                        the trick.
-                                                    </MDBModalBody>
-
-                                                    <MDBModalFooter>
-                                                        <Button
-                                                            variant="danger"
-                                                            onClick={
-                                                                toggleFullscreenModalShow
-                                                            }
-                                                        >
-                                                            Close
-                                                        </Button>
-                                                    </MDBModalFooter>
-                                                </MDBModalContent>
-                                            </MDBModalDialog>
-                                        </MDBModal>
+                                        
                                     </div>
                                 </td>
                                 <td style={{}}>
