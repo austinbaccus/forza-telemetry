@@ -18,8 +18,8 @@ import Tires from './Tires'
 import Steering from './Steering'
 import Map from './Map'
 import Tach from './Tach'
-var electron = require('electron');
-var window = electron.remote.getCurrentWindow();
+const electron = require('electron')
+const window = electron.remote.getCurrentWindow()
 const darkTheme = createTheme({
     palette: {
         type: 'dark',
@@ -203,11 +203,10 @@ function secondsToTimeString(seconds: number) {
 
 function toggleFullscreen() {
     if (!window.isFullScreen()) {
-        window.setFullScreen(true);
-     } else {
-        window.setFullScreen(false);
-     }
-    
+        window.setFullScreen(true)
+    } else {
+        window.setFullScreen(false)
+    }
 }
 
 export const Dashboard = () => {
@@ -408,7 +407,6 @@ export const Dashboard = () => {
                                         >
                                             Fullscreen
                                         </Button>
-                                        
                                     </div>
                                 </td>
                                 <td style={{}}>
