@@ -43,7 +43,7 @@
 4. Set `Data Out IP Port` to `5300`
 5. Set `Data Out Packet Format` to `CAR DASH`
 
-##### Horizon 4
+##### Horizon 4/5
 
 1. Launch the game and proceed through the menus until you can drive your car
 2. Pause the game and navigate to the Settings menu
