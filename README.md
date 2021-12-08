@@ -123,7 +123,7 @@ Most likely the map has too much data to render.
 
 ### Why do some things look out of place?
 
-This app looks best when it's in a 1920x1080 window (and looks even better in fullscreen mode). When the window deviates from this size, some visual elements might be placed incorrectly.
+This app looks best when it's in a 1920x1080 window (and looks even better in fullscreen mode). When the window deviates from this size, some visual elements might be placed incorrectly. Press F11 to make the app fullscreen.
 
 ### Can I use this app with an Xbox?
 
