@@ -49,6 +49,12 @@ namespace ForzaCore
                             SendData(data);
                         }
                     });
+                    
+                    // Dispose the client at the end of each request. Seems to clear out any buffered packets, 
+                    // preventing the program from "falling behind" the actual game. Might cause lower data resolution, 
+                    // but probably not significantly enough to matter. 
+                    client.Dispose();
+                    client = new UdpClient(FORZA_DATA_OUT_PORT);
                 }
             });
             var recorderTask = Task.Run(async () =>
