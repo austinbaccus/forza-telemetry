@@ -209,6 +209,9 @@ namespace ForzaCore
                 case 324: // FH4
                     FMData.BufferOffset = 12;
                     return true;
+                case 331: // FM 2023
+                    FMData.BufferOffset = 0;
+                    return true;
                 default:
                     return false;
             }
