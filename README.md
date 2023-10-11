@@ -11,7 +11,7 @@
 
 ---
 
-<p align=center>Record and Display Telemetry from Forza Motorsport 7, Horizon 4, and Horizon 5.
+<p align=center>Record and Display Telemetry from Forza Motorsport 2032, Forza Motorsport 7, Horizon 4, and Horizon 5.
     <br/>
 </p>
 
@@ -35,7 +35,7 @@
 
 #### Configuring Forza's UDP settings
 
-##### Motorsport 7
+##### Motorsport 7/2023
 
 1. Launch the game and head to the HUD options menu
 2. Set `Data Out` to `ON`
@@ -116,7 +116,7 @@ This gif was created by using the Recording feature and <a href="https://github.
 
 ### Why does the MPG value look off?
 
-Because Forza calculates fuel consumption in a very strange way. Also, Forza cars have an unknown amount of fuel, so calculating the Miles Per Gallon figure is a bit tricky. The app assumes that each car has roughly 13 gallons of fuel to arrive at a number for MPG (13 gallons of fuel is a typical amount for a road car).
+Because Forza doesn't tell us how much fuel is actually in the car, so a best guess is made.
 
 ### Why is the app running slowly?
 
