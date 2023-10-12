@@ -6,7 +6,8 @@ namespace ForzaCore
     {
         private const int SLED_PACKET_LENGTH = 232; // FM7
         private const int DASH_PACKET_LENGTH = 311; // FM7
-        private const int FH7_PACKET_LENGTH = 324; // FH4
+        private const int FH4_PACKET_LENGTH = 324; // FH4
+        private const int FM8_PACKET_LENGTH = 331; // FM8
 
         public static bool IsSledFormat(byte[] packet)
         {
@@ -18,10 +19,16 @@ namespace ForzaCore
             return packet.Length == DASH_PACKET_LENGTH;
         }
 
-        public static bool IsFH7Format(byte[] packet)
+        public static bool IsFH4Format(byte[] packet)
         {
-            return packet.Length == FH7_PACKET_LENGTH;
+            return packet.Length == FH4_PACKET_LENGTH;
         }
+
+        public static bool IsFM8Format(byte[] packet)
+        {
+            return packet.Length == FM8_PACKET_LENGTH;
+        }
+
 
         internal static float GetSingle(byte[] bytes, int index)
         {

@@ -356,3 +356,5 @@ MigrationBackup/
 .history/
 
 dist/
+
+release-builds/

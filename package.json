@@ -1,7 +1,7 @@
 {
     "name": "forza-telemetry",
-    "version": "1.1.0",
-    "description": "",
+    "version": "1.2.0",
+    "description": "Telemetry app for Forza",
     "main": "dist/main.js",
     "scripts": {
         "build:react": "webpack --mode development --config webpack.react.config.js",
@@ -13,7 +13,8 @@
         "check-format": "prettier --check .",
         "check-lint": "eslint . --ext ts --ext tsx --ext js",
         "format": "prettier --write .",
-        "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build"
+        "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build",
+        "debug": "node --nolazy --inspect-brk=5858 ./dist/main.js"
     },
     "repository": {
         "type": "git",
