@@ -11,7 +11,7 @@
 
 ---
 
-<p align=center>Record and Display Telemetry from Forza Motorsport 7, Horizon 4, and Horizon 5.
+<p align=center>Record and Display Telemetry from Forza Motorsport 2032, Forza Motorsport 7, Horizon 4, and Horizon 5.
     <br/>
 </p>
 
@@ -31,11 +31,11 @@
 #### Installing .NET 6.0
 
 1. Visit [Microsoft's .NET 6.0 download page](https://dotnet.microsoft.com/download/dotnet/6.0)
-2. Download the x64 version of the installer for Windows
+2. Download the x64 SDK version of the installer for Windows
 
 #### Configuring Forza's UDP settings
 
-##### Motorsport 7
+##### Motorsport 7/2023
 
 1. Launch the game and head to the HUD options menu
 2. Set `Data Out` to `ON`
@@ -43,7 +43,7 @@
 4. Set `Data Out IP Port` to `5300`
 5. Set `Data Out Packet Format` to `CAR DASH`
 
-##### Horizon 4
+##### Horizon 4/5
 
 1. Launch the game and proceed through the menus until you can drive your car
 2. Pause the game and navigate to the Settings menu
@@ -52,7 +52,7 @@
 5. Set `Data Out IP Address` to `127.0.0.1` (localhost)
 6. Set `Data Out IP Port` to `5300`
 
-#### Enable UDP Loopback for Forza
+#### Enable UDP Loopback for Forza (not needed for Steam versions)
 
 1. Install [Window 8 AppContainer Loopback Utility](https://telerik-fiddler.s3.amazonaws.com/fiddler/addons/enableloopbackutility.exe)
 2. Start the utility (if it shows a message about orphan sid, you can safely ignore it)
@@ -63,6 +63,7 @@ More information on how to enable this and why it's necessary can be found [here
 
 ### Running the App
 
+0. Pre-requisites: Make sure `git` and `npm` are installed
 1. Clone this repository: `git clone https://github.com/austinbaccus/forza-telemetry.git`
 2. Open a terminal and navigate to the folder containing the `src` folder
 3. Install dependencies with `npm install`
@@ -80,13 +81,13 @@ OR
 
 -   This app allows users to save all telemetry to a CSV file for later analysis
 -   All incoming telemetry data is saved (along with the timestamp)
-    <img src="https://user-images.githubusercontent.com/10345834/135935841-fd35ff94-461f-4e40-8305-688cf3795049.gif" width=350 align=center>
-    This gif was created by using the Recording feature and Python to make a 3D trace of the player's XYZ coordinates during a race
+<img src="https://user-images.githubusercontent.com/10345834/135935841-fd35ff94-461f-4e40-8305-688cf3795049.gif" width=350 align=center>
+This gif was created by using the Recording feature and <a href="https://github.com/austinbaccus/forza-map-visualization">Forza Map Visualization</a> to make a 3D trace of the player's XYZ coordinates during a race
 
 ### Map Trail
 
 -   Your car's path will be drawn in real-time as you drive around in either Motorsport or Horizon
-    <img src="https://user-images.githubusercontent.com/10345834/131269308-40c7ace2-069c-4a6e-8952-6631cc5274d5.gif" width=350 align=center>
+<img src="https://user-images.githubusercontent.com/10345834/131269308-40c7ace2-069c-4a6e-8952-6631cc5274d5.gif" width=350 align=center>
 
 ### Fuel Management
 
@@ -115,7 +116,7 @@ OR
 
 ### Why does the MPG value look off?
 
-Because Forza calculates fuel consumption in a very strange way. Also, Forza cars have an unknown amount of fuel, so calculating the Miles Per Gallon figure is a bit tricky. The app assumes that each car has roughly 13 gallons of fuel to arrive at a number for MPG (13 gallons of fuel is a typical amount for a road car).
+Because Forza doesn't tell us how much fuel is actually in the car, so a best guess is made.
 
 ### Why is the app running slowly?
 
@@ -123,7 +124,7 @@ Most likely the map has too much data to render.
 
 ### Why do some things look out of place?
 
-This app looks best when it's in a 1920x1080 window (and looks even better in fullscreen mode). When the window deviates from this size, some visual elements might be placed incorrectly.
+This app looks best when it's in a 1920x1080 window (and looks even better in fullscreen mode). When the window deviates from this size, some visual elements might be placed incorrectly. Press F11 to make the app fullscreen.
 
 ### Can I use this app with an Xbox?
 
