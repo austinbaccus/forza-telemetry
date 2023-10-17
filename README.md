@@ -11,7 +11,7 @@
 
 ---
 
-<p align=center>Record and Display Telemetry from Forza Motorsport 2032, Forza Motorsport 7, Horizon 4, and Horizon 5.
+<p align=center>Record and Display Telemetry from Forza Motorsport 2023, Forza Motorsport 7, Horizon 4, and Horizon 5.
     <br/>
 </p>
 
