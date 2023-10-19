@@ -23,7 +23,7 @@
 -   [Features](#features)
 -   [Built Using](#built_using)
 -   [FAQ](#faq)
--   [FAQ](#troubleshooting)
+-   [Troubleshooting](#troubleshooting)
 
 ## 🏁 Quick Start <a name="quick_start"></a>
 
