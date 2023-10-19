@@ -23,6 +23,7 @@
 -   [Features](#features)
 -   [Built Using](#built_using)
 -   [FAQ](#faq)
+-   [FAQ](#troubleshooting)
 
 ## 🏁 Quick Start <a name="quick_start"></a>
 
@@ -119,7 +120,7 @@ This gif was created by using the Recording feature and <a href="https://github.
 
 ### Why does the MPG value look off?
 
-Because Forza doesn't tell us how much fuel is actually in the car, so a best guess is made.
+Because Forza doesn't tell us how much fuel is actually in the car, so a best guess is made. The MPG calculation is assuming that every car in Forza has around 14 gallons of fuel. Fixing this (or getting the correct fuel capacity values) is on my to-do list.
 
 ### Why is the app running slowly?
 
@@ -132,3 +133,9 @@ This app looks best when it's in a 1920x1080 window (and looks even better in fu
 ### Can I use this app with an Xbox?
 
 Not yet. That is a feature I'd like to implement eventually.
+
+## 🆘 Troubleshooting <a name="troubleshooting"></a>
+
+### The app appears but I can't see any data
+
+This probably means that you don't have the right version of the C# SDK installed, or you downloaded the SDK but did not install it. Run `dotnet --info` in any terminal and make sure you have .NET SDK v6.0 installed.
