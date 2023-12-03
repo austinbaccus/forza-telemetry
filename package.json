@@ -59,7 +59,7 @@
         "@material-ui/core": "^4.12.3",
         "@material-ui/data-grid": "^4.0.0-alpha.37",
         "bootstrap": "^5.1.1",
-        "custom-electron-titlebar": "^3.2.7",
+        "custom-electron-titlebar": "^3.2.10",
         "d3": "^7.0.1",
         "mdb-react-ui-kit": "^1.4.0",
         "react": "^17.0.2",
