@@ -132,7 +132,7 @@ This app looks best when it's in a 1920x1080 window (and looks even better in fu
 
 ### Can I use this app with an Xbox?
 
-Not yet. That is a feature I'd like to implement eventually.
+Yes! You have to change the IP address and port in the Forza settings menu to match your computer's IP and port.
 
 ## 🆘 Troubleshooting <a name="troubleshooting"></a>
 
